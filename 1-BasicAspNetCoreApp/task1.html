@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)https://github.com/Wyntuition/aspnetcore-workshop-kit/tree/master/00-BasicAspNetCoreApp -->
+<html lang="en" class=" is-copy-enabled is-u2f-enabled"><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+
+    <link crossorigin="anonymous" href="./css/1.css" integrity="sha256-MeNpzNKyOh7M3oPwPvNur/8fe5Al9gQsysM6eRV1PeI=" media="all" rel="stylesheet">
+    <link crossorigin="anonymous" href="./css/2.css" integrity="sha256-Qs7rZXUl2oZfgtH3qETzuKtVxDXwVMxiuSkRvumyXpA=" media="all" rel="stylesheet">
+    <link crossorigin="anonymous" href="./css/3.css" integrity="sha256-SKJvLEs/Mt2WVnI/X91VjUL2vMXRO6CkWuAl6ryc2LM=" media="all" rel="stylesheet">
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+    
+    <title>aspnetcore-workshop-kit/00-BasicAspNetCoreApp at master · Wyntuition/aspnetcore-workshop-kit · GitHub</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="https://github.com/opensearch.xml" title="GitHub">
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
+    <link rel="apple-touch-icon" href="https://github.com/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://github.com/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://github.com/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://github.com/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://github.com/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://github.com/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://github.com/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://github.com/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://github.com/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://github.com/apple-touch-icon-180x180.png">
+    <meta property="fb:app_id" content="1401488693436528">
+
+      <meta content="https://avatars0.githubusercontent.com/u/1069837?v=3&amp;s=400" name="twitter:image:src"><meta content="@github" name="twitter:site"><meta content="summary" name="twitter:card"><meta content="Wyntuition/aspnetcore-workshop-kit" name="twitter:title"><meta content="aspnetcore-workshop-kit - Workshop to understand and build an ASP.NET Core app from scratch, using the dotnet CLI and VS Code (and Docker optionally). It includes a .NET Core slide deck if facilita..." name="twitter:description">
+      <meta content="https://avatars0.githubusercontent.com/u/1069837?v=3&amp;s=400" property="og:image"><meta content="GitHub" property="og:site_name"><meta content="object" property="og:type"><meta content="Wyntuition/aspnetcore-workshop-kit" property="og:title"><meta content="https://github.com/Wyntuition/aspnetcore-workshop-kit" property="og:url"><meta content="aspnetcore-workshop-kit - Workshop to understand and build an ASP.NET Core app from scratch, using the dotnet CLI and VS Code (and Docker optionally). It includes a .NET Core slide deck if facilita..." property="og:description">
+      <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
+    <meta name="browser-errors-url" content="https://api.github.com/_private/browser/errors">
+    <link rel="assets" href="https://assets-cdn.github.com/">
+    
+    <meta name="pjax-timeout" content="1000">
+    
+    <meta name="request-id" content="C9EB0F81:58B6:132A6D31:582F10F9" data-pjax-transient="">
+
+    <meta name="msapplication-TileImage" content="/windows-tile.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="selected-link" value="repo_source" data-pjax-transient="">
+
+    <meta name="google-site-verification" content="KT5gs8h0wvaagLKAVWq8bbeNwnZZK1r1XQysX3xurLU">
+<meta name="google-site-verification" content="ZzhVyEFwb7w3e0-uOTltm8Jsck2F5StVihD0exw2fsA">
+    <meta name="google-analytics" content="UA-3769691-2">
+
+<meta content="collector.githubapp.com" name="octolytics-host"><meta content="github" name="octolytics-app-id"><meta content="C9EB0F81:58B6:132A6D31:582F10F9" name="octolytics-dimension-request_id">
+<meta content="/&lt;user-name&gt;/&lt;repo-name&gt;/files/disambiguate" data-pjax-transient="true" name="analytics-location">
+
+
+
+  <meta class="js-ga-set" name="dimension1" content="Logged Out">
+
+
+
+        <meta name="hostname" content="github.com">
+    <meta name="user-login" content="">
+
+        <meta name="expected-hostname" content="github.com">
+      <meta name="js-proxy-site-detection-payload" content="MDVhOGJkZWUzNGRhOTFhMTI1YTNkZTE1NDRmNTVlMDAzNTJhZDU1YWFiY2U2N2RmZTk3N2IwNDk2YmVlMWEzNXx7InJlbW90ZV9hZGRyZXNzIjoiMjAxLjIzNS4xNS4xMjkiLCJyZXF1ZXN0X2lkIjoiQzlFQjBGODE6NThCNjoxMzJBNkQzMTo1ODJGMTBGOSIsInRpbWVzdGFtcCI6MTQ3OTQ3OTU1NCwiaG9zdCI6ImdpdGh1Yi5jb20ifQ==">
+
+
+      <link rel="mask-icon" href="https://assets-cdn.github.com/pinned-octocat.svg" color="#000000">
+      <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+
+    <meta name="html-safe-nonce" content="a40a88a8044adb0abff5018599766744678833a6">
+    <meta content="a71d85b7cf6b07ceb3da33956c21e4c5e092d0fc" name="form-nonce">
+
+    <meta http-equiv="x-pjax-version" content="42e5bf5718362dfefe85e13d1b5a489b">
+    
+
+      
+  <meta name="description" content="aspnetcore-workshop-kit - Workshop to understand and build an ASP.NET Core app from scratch, using the dotnet CLI and VS Code (and Docker optionally). It includes a .NET Core slide deck if facilitating this workshop in person. Complete walkthrough steps are included so it can be done individually.">
+  <meta name="go-import" content="github.com/Wyntuition/aspnetcore-workshop-kit git https://github.com/Wyntuition/aspnetcore-workshop-kit.git">
+
+  <meta content="1069837" name="octolytics-dimension-user_id"><meta content="Wyntuition" name="octolytics-dimension-user_login"><meta content="67144298" name="octolytics-dimension-repository_id"><meta content="Wyntuition/aspnetcore-workshop-kit" name="octolytics-dimension-repository_nwo"><meta content="true" name="octolytics-dimension-repository_public"><meta content="false" name="octolytics-dimension-repository_is_fork"><meta content="67144298" name="octolytics-dimension-repository_network_root_id"><meta content="Wyntuition/aspnetcore-workshop-kit" name="octolytics-dimension-repository_network_root_nwo">
+  <link href="https://github.com/Wyntuition/aspnetcore-workshop-kit/commits/master.atom" rel="alternate" title="Recent Commits to aspnetcore-workshop-kit:master" type="application/atom+xml">
+
+
+      <link rel="canonical" href="https://github.com/Wyntuition/aspnetcore-workshop-kit/tree/master/00-BasicAspNetCoreApp" data-pjax-transient="">
+  </head>
+
+
+  <body class="logged-out  env-production windows vis-public">
+    
+    
+
+    
+    
+    
+
+
+
+          
+
+
+
+    
+
+      
+
+
+    <div role="main">
+        <div itemscope="" itemtype="http://schema.org/SoftwareSourceCode">
+    <div id="js-repo-pjax-container" data-pjax-container="">
+      
+
+
+<div class="container new-discussion-timeline experiment-repo-nav">
+  <div class="repository-content">
+
+    
+
+
+
+
+
+  
+
+
+
+
+
+
+  <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+    
+
+      <article class="markdown-body entry-content" itemprop="text"><h1><a id="user-content-setup-step-create-a-net-core-app-then-set-up-aspnet" class="anchor" href="https://github.com/Wyntuition/aspnetcore-workshop-kit/tree/master/00-BasicAspNetCoreApp#setup-step-create-a-net-core-app-then-set-up-aspnet" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup Step: Create a .NET Core app, then set up ASP.NET</h1>
+
+<h2><a id="user-content-objectives" class="anchor" href="https://github.com/Wyntuition/aspnetcore-workshop-kit/tree/master/00-BasicAspNetCoreApp#objectives" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Objectives</h2>
+
+<ul>
+<li>Create a basic .NET Core app using the .NET CLI</li>
+<li>Put in the core code needed to set up ASP.NET Core - its dependencies and host initialization</li>
+</ul>
+
+<h2><a id="user-content-lets-get-started" class="anchor" href="https://github.com/Wyntuition/aspnetcore-workshop-kit/tree/master/00-BasicAspNetCoreApp#lets-get-started" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Let's get started</h2>
+
+<ol>
+<li>Open a command line, create and go into a new directory, and run <code>dotnet new</code>, then <code>dotnet run</code> to create &amp; run a .NET Core 'Hello World!' app.</li>
+<li><p>Type <code>code .</code> to open VS Code for directory. Add .NET Core and Kestrel dependencies to project.json:</p>
+
+<pre><code>"dependencies": {
+
+    "Microsoft.NETCore.App": {
+        "version": "1.1.0",
+        "type": "platform"
+    },
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0"
+
+}
+</code></pre></li>
+<li><p>Add ASP.NET Core setup code to the Main method (entry point of all .NET Core applications, including ASP.NET Core) in Program.cs, and remove the console line:</p>
+
+<pre><code>// Minimal ASP.NET setup in Main method
+
+var host = new WebHostBuilder()
+    .UseKestrel()
+    .Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World!")))
+    .Build();
+
+host.Run();
+
+
+// NOTE, these are needed and can be added manually, though you can use the IDE (if VS Code + C# extension, or VS)
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+</code></pre>
+
+<p>At this point, you have a minimal ASP.NET Core app set up. You can navigate to http://localhost:9182 to get a hello world response.</p></li>
+<li><p>Move configuration of the host to the Startup class, per convention.</p>
+
+<ol>
+<li><p>Tweak your Program.cs to use a Startup class for ASP.NET Core host configuration, and remove the host configuration:</p>
+
+<pre><code>//REMOVE THIS: .Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")))                    
+.UseStartup&lt;Startup&gt;()
+</code></pre></li>
+<li><p>Create a class in the project root called Startup.cs</p></li>
+<li><p>Add this to your Startup.cs class:</p>
+
+<pre><code>using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace ConsoleApplication
+{
+    public class Startup
+    {
+        // This method gets called by the runtime, after ConfigureServices, and is required. Use this method to configure the HTTP request pipeline.
+        // IApplicationBuilder is required; provides the mechanisms to configure an application’s request pipeline.
+        // Middleware is configured here.
+        public void Configure(IApplicationBuilder app)
+        {
+            app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!"));
+        }
+    }
+}
+</code></pre></li>
+</ol></li>
+<li><p>Configure the app to use IIS/IIS Express for the web server &amp; set the content root</p>
+
+<ol>
+<li><p>Add the following lines before Build() in the Program.cs main method:</p>
+
+<pre><code>//  If the app should work with IIS, the UseIISIntegration method should be called as part of building the host. Note that this does not configure a server, like UseKestrel does.
+//  To use IIS with ASP.NET Core, you must specify both UseKestrel and UseIISIntegration. Kestrel is designed to be run behind a proxy and should not be deployed directly facing the Internet.
+//  UseIISIntegration specifies IIS as the reverse proxy server.
+.UseIISIntegration() // Reverse proxy using IIS &amp; IIS Express. It does not deal with IServer as Kestrel does. This call configures the port and base path the server should listen on when running behind AspNetCoreModule, and also to capture startup errors.
+
+.UseContentRoot(Directory.GetCurrentDirectory()) //  The server’s content root determines where it searches for content files, like MVC View files. The default content root is the folder from which the application is run.
+</code></pre></li>
+<li><p>You'll need to add this dependency for IIS integration, to project.json:</p>
+
+<pre><code>"Microsoft.AspNetCore.Server.IISIntegration": "1.1.0"
+</code></pre></li>
+</ol>
+
+<p>Then you can restore and run again.</p></li>
+<li><p>We're going to add a watcher now so when we change our source files, it rebuilds and re-runs our app. Add this to <code>project.json</code>:</p>
+
+<pre><code>"tools": {
+    "Microsoft.DotNet.Watcher.Tools": "1.1.0-*"
+}
+</code></pre>
+
+<ol>
+<li>We have to run <code>dotnet restore</code> because we changed our project.json and have a new dependency to pull in. </li>
+<li>Now when we run <code>dotnet watch run</code>, the watcher will be active. Change the Hello World text, save, and see in the command prompt that it automatically rebuilds and re-runs the app.</li>
+</ol></li>
+</ol>
+
+
+</article>
+  </div>
+
+
+  </div>
+  
+</div>
+
+
+    </div>
+  </div>
+
+    </div>
+
+        
+
+
+
+    
+
+    
+
+
+      
+      
+      
+      
+      
+      
+      
+    
+    
+
+  
+
+
+</body></html>

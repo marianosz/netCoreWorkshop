@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class=" is-copy-enabled is-u2f-enabled"><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+
+    <link crossorigin="anonymous" href="./css/1.css" integrity="sha256-MeNpzNKyOh7M3oPwPvNur/8fe5Al9gQsysM6eRV1PeI=" media="all" rel="stylesheet">
+    <link crossorigin="anonymous" href="./css/2.css" integrity="sha256-Qs7rZXUl2oZfgtH3qETzuKtVxDXwVMxiuSkRvumyXpA=" media="all" rel="stylesheet">
+    
+    
+    <link crossorigin="anonymous" href="./css/3.css" integrity="sha256-SKJvLEs/Mt2WVnI/X91VjUL2vMXRO6CkWuAl6ryc2LM=" media="all" rel="stylesheet">
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+    
+    <title>Step 5: Deploying an ASP.NET Core app</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="https://github.com/opensearch.xml" title="GitHub">
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
+    <link rel="apple-touch-icon" href="https://github.com/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://github.com/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://github.com/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://github.com/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://github.com/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://github.com/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://github.com/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://github.com/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://github.com/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://github.com/apple-touch-icon-180x180.png">
+</head>
+
+
+  <body class="logged-out  env-production windows vis-public">
+    
+    <div role="main">
+        <div itemscope="" itemtype="http://schema.org/SoftwareSourceCode">
+    <div id="js-repo-pjax-container" data-pjax-container=""><div class="container new-discussion-timeline experiment-repo-nav">
+  <div class="repository-content">
+
+  <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+    
+
+      <article class="markdown-body entry-content" itemprop="text"><h1><a id="user-content-step-5-deploying-an-aspnet-core-app" class="anchor"  aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Step 5: Deploying an ASP.NET Core app</h1>
+
+<h2><a id="user-content-publishing---preparing-for-deployment" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publishing - preparing for deployment</h2>
+
+<ol>
+<li><p>Build using release mode:
+<code>dotnet build -c release</code></p></li>
+<li><p>Publish the application - this basically compiles the app's files into an output target, for copying onto a server
+<code>dotnet publish -c release -o app</code></p>
+
+<p>We're specifying the output directory as 'app' here. This essentially made a folder, app, with the needed files, ready to be run. </p></li>
+</ol>
+
+<h2><a id="user-content-deployment" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deployment</h2>
+
+<p>There are many options for deploying the package (/app) you now have. It's currently possible to deploy to Azure App Services very easily via local git repo. You can deploy in a container(s) to AWS Container Service very quickly. You can try in a container to Heroku, though they also support .NET Core directly in theory with its build pack (I haven't tried). </p>
+
+<p>For now we're going to show one of the easiest and fastest ways to deploy - to Azure App Services via a local git repo. </p>
+
+<h1><a id="user-content-from-local-repo" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>From Local Repo</h1>
+
+<ol>
+<li><p>Create a new Web App in Azure. Select 'Deployment Options' and Local Git as the source.
+Go back to the app's properties and copy the Git URL listed. Create 'Deployment Credentials' to deploy here from git.</p></li>
+<li><p>Create a local git repo, and set the remote push repo to the above Azure app git URL,
+<code>git remote add azure &lt;Azure app Git URL&gt;</code></p></li>
+</ol>
+
+<p>Then commit and and push to Azure, <code>git push -u azure master</code>. For more <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-deploy-local-git/">detailed instruction, see Microsoft's docs</a>.</p>
+
+<h1><a id="user-content-from-local-repo" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running in a Docker container</h1>
+
+
+
+<p>If you would like to use Docker in the devleopment process of your ASP.NET Core app, you can do so easily and it's great practice. You can build your own container to use, or use an existing one. Once you have a container running with the ASP.NET Core environment mounted to your souce code, you can do the workshop using Docker to build and run the app. </p>
+
+<h2><a id="user-content-build-the-container-optional-you-can-skip-to-running-the-container-to-just-get-an-environment-started-up" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Build the container (optional, you can skip to running the container to just get an environment started up)</h2>
+
+<p>Take a look at the Dockerfile in the root's code in this section. This specifies what the container will have, and in this case, it's based on the latest public .NET Core image. Then it adds some configuration for ASP.NET. You can build the ASP.NET Core container from the provided Dockerfile, following these steps: </p>
+
+<ol>
+<li><p>Get the contents of <code>Dockerfile</code> from the start folder in this section (or go to that folder), and run this command in the same directory as the file:</p>
+
+<pre><code>docker build -t netcore-webapp .</code></pre></li>
+<li><p>See that your image was created correct from the build step above, by listing the images on your machine, by typing <code>docker images</code>. You should see it in the list.</p></li>
+</ol>
+
+<p>For instructions on how to quickly get started with Docker if you don't have it installed and haven't used it, take a look at this article, <a href="https://stormpath.com/blog/tutorial-deploy-asp-net-core-on-linux-with-docker">Deploy an ASP.NET Core Application on Linux with Docker</a>.</p>
+
+<h2><a id="user-content-run-the-container" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run the container</h2>
+
+
+<p>For now, you can run the container you built specifying a port binding for listening and the image name, using the following command. </p>
+
+<ol>
+<li><p>Go to your ASP.NET Core app's directory</p>
+
+<pre><code>docker run -d -p 8080:5000 -t netcore-webapp
+</code></pre></li>
+<li><p>Check the running Containers
+<pre><code>docker ps
+</code></pre></li>
+</ol>
+
+<li><p>Add an item to the database. You can either use the following curl command, or your favorite tool like Postman:</p>
+
+<pre><code>curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:8080/api/articles
+</code></pre></li>
+<li><p>Navigate to the endpoint, <a href="http://localhost:8080/api/articles">http://localhost:8080/api/articles</a>.  </p></li>
+</ol>
+
+<p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the SQLite database.</p>
+
+
+<h2><a id="user-content-docker-compose" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Docker Compose</h2>
+
+<p>You can use Docker Compose to spin up multiple containers at once, in order to create a multi-server environmnet. The most common example would be to spin up a container running the application, and a container running the database. </p>
+
+<p>There is a <code>docker-compose.yml</code> file in the end folder of this section that use Docker Compose to spin up an ASP.NET Core container, and a postgreSQL container. We are going to use that folder to build a image of the application that works with postgreSQL and then deploy all on composed docker containers</p>
+
+
+<li><p>Open the end folder of this task and run the following command to create the image that works with postgreSQL</p>
+
+<pre><code>docker build -t netcore-webapp-postgres .</code></pre></li>
+<li><p>See that your image was created correct from the build step above, by listing the images on your machine, by typing <code>docker images</code>. You should see it in the list.</p></li>
+</ol>
+
+<h3><a id="user-content-to-build-the-images-and-run-them" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Build the compose images</h3>
+
+<pre><code>  docker-compose build
+</code></pre>
+
+<h3><a id="user-content-to-build-the-images-and-run-them" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>And then run them</h3>
+
+<pre><code>  docker-compose up
+</code></pre>
+
+<p>You can add -d at the end so the containers run in the background; without it they would stop when you exit the shell. You can connect to the shell via 'docker exec -ti  sh`.</p>
+
+<li><p>Add an item to the database. You can either use the following curl command, or your favorite tool like Postman:</p>
+
+<pre><code>curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:8080/api/articles
+</code></pre></li>
+<li><p>Navigate to the endpoint, <a href="http://localhost:8080/api/articles">http://localhost:8080/api/articles</a>.  </p></li>
+</ol>
+
+<p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the Postgres database on the container.</p>
+
+
+
+<h3><a id="user-content-to-stop-the-containers" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>To stop the containers:</h3>
+
+<pre><code>  docker-compose stop
+</code></pre>
+
+<p>It is useful to log into your containers. To do that, use this: </p>
+
+<pre><code>  docker exec -ti &lt;Container name&gt; sh
+</code></pre>
+</article>
+  </div>
+
+
+  </div>
+  
+</div></div>
+  </div>
+
+    </div>
+
+        
+
+
+
+    
+
+    
+
+
+      
+      
+      
+      
+      
+      
+      
+    
+    
+
+  
+
+
+</body></html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled"><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+
+    <link crossorigin="anonymous" href="./css/1.css" integrity="sha256-MeNpzNKyOh7M3oPwPvNur/8fe5Al9gQsysM6eRV1PeI=" media="all" rel="stylesheet">
+    <link crossorigin="anonymous" href="./css/2.css" integrity="sha256-Qs7rZXUl2oZfgtH3qETzuKtVxDXwVMxiuSkRvumyXpA=" media="all" rel="stylesheet">
+    
+    
+    <link crossorigin="anonymous" href="./css/3.css" integrity="sha256-SKJvLEs/Mt2WVnI/X91VjUL2vMXRO6CkWuAl6ryc2LM=" media="all" rel="stylesheet">
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+    
+    <title>Step 4: Entity Framework and Data Access Infrastructure</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="https://github.com/opensearch.xml" title="GitHub">
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
+    <link rel="apple-touch-icon" href="https://github.com/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://github.com/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://github.com/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://github.com/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://github.com/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://github.com/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://github.com/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://github.com/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://github.com/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://github.com/apple-touch-icon-180x180.png">
+  
+      <link rel="mask-icon" href="https://assets-cdn.github.com/pinned-octocat.svg" color="#000000">
+      <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+
+  <body class="logged-out  env-production windows vis-public">
+    <div role="main">
+        <div itemscope="" itemtype="http://schema.org/SoftwareSourceCode">
+    <div id="js-repo-pjax-container" data-pjax-container=""><div class="container new-discussion-timeline experiment-repo-nav">
+  <div class="repository-content">
+
+
+
+  <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+    
+
+      <article class="markdown-body entry-content" itemprop="text"><h1><a id="user-content-step-3-entity-framework-and-data-access-infrastructure" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Step 3: Entity Framework and Data Access Infrastructure</h1>
+
+<h2><a id="user-content-objectives" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Objectives</h2>
+
+<ul>
+<li>Set up Entity Framework Core 1.1</li>
+<li>wire it to a database (SQLite in this case)</li>
+<li>Use it to get and post some data to the database, from our controller </li>
+<li>Set up the repository pattern for data access<br></li>
+</ul>
+
+<h2><a id="user-content-set-up-database-context-and-other-standard-entity-framework-infrastructure" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Set up database context and other standard Entity Framework infrastructure</h2>
+
+<ol>
+<li><p>Add these dependencies and tools for Entity Framework and SQLite, as we'll use this lightweight database for our app:</p>
+
+<pre><code>"Microsoft.EntityFrameworkCore": "1.1.0",
+"Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
+"Microsoft.EntityFrameworkCore.Design": "1.1.0"
+...
+"tools": {
+...
+    Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4"
+}
+</code></pre></li>
+<li><p>Navigate to <code>Startup.cs</code> and add this namespace:</p>
+<pre><code>using Microsoft.EntityFrameworkCore;
+</code></pre></li>
+<li><p>Set up Entity Framework and register database to Startup.ConfigureServices:</p>
+
+<pre><code>services.AddDbContext&lt;Data.ArticlesContext&gt;(options =&gt;
+{
+    options.UseSqlite(Configuration.GetConnectionString("Articles"));
+});
+</code></pre></li>
+<li><p>Add the connection string to appSettings:</p>
+
+<pre><code>{
+...
+  "ConnectionStrings" : {
+      "Articles": "Data Source=articles.db"
+  },
+</code></pre></li>
+<li><p>Create this context class to represent the database in a new Data folder:</p>
+
+<pre><code>using Microsoft.EntityFrameworkCore;
+using ConsoleApplication.Entities;
+
+namespace ConsoleApplication.Data
+{
+  public class ArticlesContext : DbContext
+  {
+      public DbSet&lt;Article&gt; Articles { get; set; }
+
+      protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+      {
+          optionsBuilder.UseSqlite("Filename=./articles.db");
+      }
+  }
+}
+</code></pre></li>
+<li><p>Navigate to <code>ArticlesController.cs</code> and add these namespaces:</p>
+<pre><code>using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+</code></pre></li>
+
+<li><p>On the <code>ArticlesController</code> class inject the database context into the constructor of the controller. While at it, add a logger so we can try it out in a controller. Add the following property and constructor parameter to utilize the logging framework you set up earlier. </p>
+
+<pre><code>private readonly ArticlesContext _context;
+private readonly ILogger&lt;ArticlesController&gt; _logger; 
+
+public ArticlesController(ArticlesContext context, ILogger&lt;ArticlesController&gt; logger)
+{
+    _context = context;
+    _logger = logger;
+}
+</code></pre></li>
+<li><p>Update the <code>Get</code> endpoint in <code>ArticlesController</code> to use the database context, as follows. You can now remove the _Articles object there.</p>
+<pre><code>public async Task&lt;Article&gt Get(int id)
+{
+    var article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
+	
+    return article;
+}</code></pre>
+
+<p>You can also add this method, to return all items added to the database,</p>
+
+<div class="highlight highlight-source-cs"><pre>public async Task&lt;IEnumerable&lt;Article&gt;&gt; Get() =&gt; await _context.Set&lt;Article&gt;().ToListAsync();</pre></div></li>
+<li><p>Create a method so we can populate the database.</p>
+
+<pre><code>[HttpPost]
+public async Task&lt;IActionResult&gt; Create([FromBody]Article article)
+{
+    _logger.LogDebug("Starting save");
+
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    _context.Articles.Add(new Article { Title = article.Title });
+    await _context.SaveChangesAsync(); 
+
+    _logger.LogDebug("Finished save");
+
+    return CreatedAtAction(nameof(Get), new { id = article.Title }, article);
+}
+</code></pre></li>
+</ol>
+
+<p>Now, from the command line:</p>
+
+<ol>
+<li><p>Load all the dependencies with <code>dotnet restore</code></p></li>
+<li><p>Build with <code>dotnet build</code></p></li>
+<li><p>Run migrations with:</p>
+
+<p><code>dotnet ef migrations add Initial</code></p></li>
+<li><p>Apply the changes:</p>
+
+<p><code>dotnet ef database update</code></p></li>
+
+<li><p>Run the application</p>
+
+<p><code>dotnet run</code></p></li>
+
+<li><p>Add an item to the database. You can either use the following curl command, or your favorite tool like Postman:</p>
+
+<p><code>
+curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:9182/api/articles
+</code></p></li>
+<li><p>Navigate to the endpoint, <a href="http://localhost:9182/api/articles">http://localhost:9182/api/articles</a>.  </p></li>
+</ol>
+
+<p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the SQLite database.</p>
+
+<p>Also, note the log messages from the statements you added when saving an item.  </p>
+
+<h3><a id="user-content-some-ef-commands" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Some ef commands:</h3>
+
+<ul>
+<li>add – Add a new migration</li>
+<li>apply – Apply migrations to the database</li>
+<li>list – List the migrations</li>
+<li>script – Generate a SQL script from migrations</li>
+<li>remove – Remove the last migration</li>
+</ul>
+
+<h2><a id="user-content-add-a-repository" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add a repository</h2>
+
+<p>Repositories will encapsulate your database context and provide a place to put data access code. In this exercise, you must:</p>
+
+<ul>
+<li>Add a base repository class for your common data operations. I recommend using a generic base repository when data operations are simple, and adding repositories specific to the aggregate roots when specific data access code is needed. This will prevent an explosion of similar repository code, such as duplicate add/update/etc code. Here we also add a concrete repo to actually implement to show this approach. </li>
+<li>Register the repository in the container so it can be injected with DI </li>
+<li>Change the <code>ArticlesContext</code> class to use the repository instead of the context object directly. </li>
+<li>(optional) Implement another repository class that implements the same interface as the one you just created, but implement it to save the itmes to an in-memory collection. See how you can use DI to inject the interface, then specify the implementation in the DI configuration. You can change this configuration to switch from the im-memory storage to database storage. </li>
+</ul>
+
+<p>See the end source code in this section to see how it was done, as we do not have step-by-step instructions at this time. </p>
+
+
+</article>
+  </div>
+
+
+  </div>
+  
+</div></div>
+  </div>
+
+    </div>
+
+        
+
+
+
+    
+
+    
+
+
+      
+      
+      
+      
+      
+      
+      
+    
+    
+
+  
+
+
+</body></html>

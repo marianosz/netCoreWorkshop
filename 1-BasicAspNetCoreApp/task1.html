@@ -134,18 +134,12 @@
  aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Let's get started</h2>
 
 <ol>
-<li>Open a command line, create and go into a new directory, and run <code>dotnet new</code>, then <code>dotnet restore</code>, then <code>dotnet run</code> to create &amp; run a .NET Core 'Hello World!' app.</li>
-<li><p>Type <code>code .</code> to open VS Code for directory. Add .NET Core and Kestrel dependencies to project.json:</p>
+<li>Open a command line, create and go into a new directory, and run <code>dotnet new console</code>, then <code>dotnet restore</code>, then <code>dotnet run</code> to create &amp; run a .NET Core 'Hello World!' app.</li>
+<li><p>Type <code>code .</code> to open VS Code for directory. Add .NET Core and Kestrel dependencies to the .csproj file:</p>
 
-<pre><code>"dependencies": {
-
-    "Microsoft.NETCore.App": {
-        "version": "1.1.0",
-        "type": "platform"
-    },
-    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0"
-
-}
+<pre><code>&#60;ItemGroup&#62;
+    &#60;PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.2" /&#62;
+&#60;/ItemGroup&#62;
 </code></pre></li>
 <li><p>Add ASP.NET Core setup code to the Main method (entry point of all .NET Core applications, including ASP.NET Core) in Program.cs, and remove the console line:</p>
 
@@ -165,7 +159,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 </code></pre>
 
-<p>At this point, you have a minimal ASP.NET Core app set up. You can navigate to http://localhost:9182 to get a hello world response.</p></li>
+<p>At this point, you have a minimal ASP.NET Core app set up. Run <code>dotnet restore</code>, then <code>dotnet run</code>. You can navigate to http://localhost:5000 to get a hello world response.</p></li>
 <li><p>Move configuration of the host to the Startup class, per convention.</p>
 
 <ol>
@@ -210,18 +204,18 @@ namespace ConsoleApplication
 
 .UseContentRoot(Directory.GetCurrentDirectory()) //  The server’s content root determines where it searches for content files, like MVC View files. The default content root is the folder from which the application is run.
 </code></pre></li>
-<li><p>You'll need to add this dependency for IIS integration, to project.json:</p>
+<li><p>You'll need to add this dependency for IIS integration, to the .csproj file:</p>
 
-<pre><code>"Microsoft.AspNetCore.Server.IISIntegration": "1.1.0"
+<pre><code> &#60;PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.2" /&#62;
 </code></pre></li>
 </ol>
 
 <p>Then you can restore and run again.</p></li>
 <li><p>We're going to add a watcher now so when we change our source files, it rebuilds and re-runs our app. Add this to <code>project.json</code>:</p>
 
-<pre><code>"tools": {
-    "Microsoft.DotNet.Watcher.Tools": "1.1.0-*"
-}
+<pre><code>&#60;ItemGroup&#62;
+	&#60;DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.1" /&#62;
+&#60;/ItemGroup>
 </code></pre>
 
 <ol>

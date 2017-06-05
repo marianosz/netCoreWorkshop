@@ -66,15 +66,15 @@
 <h2><a id="user-content-lets-get-started" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Let's get started</h2>
 
 <ol>
-<li><p>Set up MVC! The Web API has been merged into MVC, so it's all one package. Start by adding this dependency for MVC to project.json. You will have to use your IDE to add using statements in the files referenced,</p>
+<li><p>Set up MVC! The Web API has been merged into MVC, so it's all one package. Start by adding this dependency for MVC to the csproj.file. You will have to use your IDE to add using statements in the files referenced,</p>
 
-<pre><code>"Microsoft.AspNetCore.Mvc": "1.1.0"
+<pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3"/&#62;
 </code></pre></li>
 <li><p>Add this namespace to the Startup class:</p>
 <pre><code>using Microsoft.Extensions.DependencyInjection;
 </code></pre>
 <li><p>Add this method to the Startup class:</p>
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 <pre><code>// This method gets called by the runtime. Use this method to add services to the container.
 
 public void ConfigureServices(IServiceCollection services)
@@ -102,7 +102,7 @@ namespace ConsoleApplication.Controllers
     }
 }
 </code></pre></li>
-<li><p>Run the app and you should be able to hit localhost:9182/api/articles.</p></li>
+<li><p>Run the app and you should be able to hit localhost:5000/api/articles.</p></li>
 </ol>
 
 <h2><a id="user-content-returning-json-from-the-api" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returning JSON from the API</h2>
@@ -132,9 +132,9 @@ namespace ConsoleApplication.Controllers
 }
 </code></pre></li>
 
-<li><p>Add the <code>Microsoft.AspNetCore.Mvc.Formatters.Json</code> to <code>project.json</code>,</p>
+<li><p>Add the <code>Microsoft.AspNetCore.Mvc.Formatters.Json</code> reference to the .csproj file,</p>
 
-<pre><code>"Microsoft.AspNetCore.Mvc.Formatters.Json": "1.1.0"</code></pre></li>
+<pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="1.1.3"/&#62;</code></pre></li>
 <li><p>Configure MVC to use the JSON formatter by changing the <code>ConfigureServices</code> in <code>Startup.cs</code> to use the following,</p>
 
 <div class="highlight highlight-source-cs"><pre>public void ConfigureServices(IServiceCollection services)
@@ -142,8 +142,8 @@ namespace ConsoleApplication.Controllers
     services.AddMvcCore().AddJsonFormatters();
 }</pre></div></li>
 	 
-<li><p>Add this namespace to the <code>ArticlesController</code>:</p>
-<pre><code>namespace ConsoleApplication.Entities</code></pre></li>
+<li><p>Add this using to the <code>ArticlesController</code>:</p>
+<pre><code>using ConsoleApplication.Entities;</code></pre></li>
 
 <li><p>Add a static list of projects to the <code>ArticlesController</code>:</p>
 
@@ -166,7 +166,7 @@ namespace ConsoleApplication.Controllers
       return _Articles.Single(a =&gt; a.Id == id);
   }
 </code></pre></li>
-<li><p>Run the application and navigate to <code>/api/articles/1</code>. You should see a JSON payload of that article.</p></li>
+<li><p>Run the application and navigate to <code>localhost:5000/api/articles/1</code>. You should see a JSON payload of that article.</p></li>
 </ol></li>
 </ol>
 </article>

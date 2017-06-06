@@ -79,7 +79,7 @@
 <ol>
 <li><p>To do that, first add this dependency: </p>
 
-<pre><code>"Microsoft.AspNetCore.Diagnostics": "1.1.0",
+<pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.2" /&#62;
 </code></pre></li>
 <li><p>Then add  <code>IHostingEnvironment</code> to the Startup.cs <code>Configure</code> method, and use that object to get the environment. Then add the code to check the environment and add the developer exception page middleware:</p>
 
@@ -109,12 +109,12 @@
 
 <ol>
 <li><p>Add this dependency:</p>
-<pre><code>"Microsoft.Extensions.Configuration.CommandLine": "1.1.0"
+<pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="1.1.2" /&#62;
 </code></pre></li>
 <li><p>Add this namespace to Program.cs:</p>
 <pre><code>using Microsoft.Extensions.Configuration;
 </code></pre></li>
-<li><p>Add this configuration Program.cs's Main method. You will need to add a using statement:</p>
+<li><p>Add this configuration Program.cs's Main method:</p>
 
 <pre><code>var config = new ConfigurationBuilder()  
     .AddCommandLine(args)
@@ -125,7 +125,9 @@
 <pre><code>.UseConfiguration(config)
 </code></pre>
 
-<p>Now you can run <code>dotnet run --environment "production"</code> when you want the hosting environment to be that (or you can use staging, etc or your own). </p></li>
+<p>Now you can run <code>dotnet run --environment "production"</code> when you want the hosting environment to be that (or you can use staging, etc or your own).
+Whit this <code>"production"</code> environment parameter you can browse <code>localhost:5000/api/articles</code> to verify that the previous added code inside env.IsDevelopment() is avoided. </p></li>
+
 </ol>
 
 <h2><a id="user-content-configuration-files" class="anchor" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration files</h2>
@@ -137,8 +139,7 @@
 <ol>
 <li><p>Add these dependencies:</p>
 
-<pre><code>"Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
-"Microsoft.Extensions.Configuration.Json": "1.1.0"
+<pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" /&#62;
 </code></pre></li>
 <li><p>Navigate to <code>Startup.cs</code> and add this namespace:</p>
 <pre><code>using Microsoft.Extensions.Configuration;
@@ -181,7 +182,7 @@ public Startup(IHostingEnvironment env)
 <ol>
 <li><p>Add the <code>Microsoft.Extensions.Logging.Console</code> package to <code>project.json</code>:</p>
 
-<pre><code>"Microsoft.Extensions.Logging.Console": "1.1.0"
+<pre><code>&#60;PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" /&#62;
 </code></pre></li>
 <li><p>Navigate to <code>Startup.cs</code> and Add this namespace</p>
 <pre><code>using Microsoft.Extensions.Logging;
@@ -196,7 +197,7 @@ public Startup(IHostingEnvironment env)
     ...</pre></div></li>
 <li><p>Add some log statements to the end of the <code>Configure</code> method to test the settings:</p>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">void</span> Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">void</span> Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 {
   ...
     startupLogger.LogTrace(<span class="pl-s"><span class="pl-pds">"</span>Trace test output!<span class="pl-pds">"</span></span>);

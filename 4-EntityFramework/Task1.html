@@ -63,14 +63,15 @@
 <ol>
 <li><p>Add these dependencies and tools for Entity Framework and SQLite, as we'll use this lightweight database for our app:</p>
 
-<pre><code>"Microsoft.EntityFrameworkCore": "1.1.0",
-"Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
-"Microsoft.EntityFrameworkCore.Design": "1.1.0"
+<pre><code>&#60;PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="1.1.2" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" /&#62;
 ...
-"tools": {
-...
-    Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4"
-}
+&#60;ItemGroup&#62;
+    &#60;DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" /&#62;
+&#60;/ItemGroup&#62;
+  
 </code></pre></li>
 <li><p>Navigate to <code>Startup.cs</code> and add this namespace:</p>
 <pre><code>using Microsoft.EntityFrameworkCore;
@@ -174,12 +175,12 @@ public async Task&lt;IActionResult&gt; Create([FromBody]Article article)
 
 <p><code>dotnet run</code></p></li>
 
-<li><p>Add an item to the database. You can either use the following curl command, or your favorite tool like Postman:</p>
+<li><p>Add an item to the database. You can either use the following curl command on bash, or your favorite tool like Postman:</p>
 
 <p><code>
-curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:9182/api/articles
+curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:5000/api/articles
 </code></p></li>
-<li><p>Navigate to the endpoint, <a href="http://localhost:9182/api/articles">http://localhost:9182/api/articles</a>.  </p></li>
+<li><p>Navigate to the endpoint, <a href="http://localhost:5000/api/articles">http://localhost:5000/api/articles</a>.  </p></li>
 </ol>
 
 <p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the SQLite database.</p>

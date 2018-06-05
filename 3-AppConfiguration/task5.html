@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 5: Configuring basic app features</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+        <div role="main">
+            <div class="repository-content">
+                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+
+                    <article class="markdown-body entry-content" itemprop="text">
+                        <h1>Step 5: Configuring basic app features </h1>
+
+                        <h2>Objectives</h2>
+
+                        <ul>
+                            <li>Set up configuration files</li>
+                            <li>Set up environment-specific settings</li>
+                            <li>Logging</li>
+                            <li>Dependency injection</li>
+                        </ul>
+
+                        <h2>Hosting environment</h2>
+
+                        <p>There are a number of things we want happening differently depending what hosting environment we're in, such as showing exceptions in the browser if we're in our development environment or using a specific configuration file per
+                            environment. If we don't specify somehow, ASP.NET will default to our hosting environment being "Production". There are a number of ways to set the hosting environment. </p>
+
+                        <ol>
+                            <li>
+                                <p>We're going to set the hosting environment to "Development" in our OS's environment variables, so it will default to that. Otherwise you'd have to pass a an argument, when running the app from the command line, to set it
+                                    to that (you can also set it in Visual Studio and VS Code, see the below blog). </p>
+
+                                <p>See <a href="http://andrewlock.net/how-to-set-the-hosting-environment-in-asp-net-core/">this blog</a> for how to set the environment variable on your OS. For Windows, run this in Powershell on the project folder,</p>
+
+                                <pre><code>$Env:ASPNETCORE_ENVIRONMENT = "Development"
+</code></pre>
+
+                            </li>
+                            <li>
+                                <p>Run <code>dotnet run</code> and see that it says the hosting environment is now development. </p>
+                            </li>
+                            <li>
+                                <p>Now we want to set it up so when the hosting environment is development, it will display a detailed exception page in the browser, including header information. </p>
+
+                                <ol>
+                                    <li>
+                                        <p>To do that, first add this dependency: </p>
+
+                                        <pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.3" /&#62;
+</code></pre></li>
+                                    <li>
+                                        <p>Then add these namespaces to Startup.cs:</p>
+                                        <pre><code>using System;
+using Microsoft.AspNetCore.Hosting;
+</code></pre></li>
+                                    <li>
+
+                                        <p>Then add <code>IHostingEnvironment</code> to the Startup.cs <code>Configure</code> method, and use that object to get the environment. Then add the code to check the environment and add the developer exception page
+                                            middleware:
+                                        </p>
+
+                                        <pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    ...
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    ...
+</code></pre></li>
+                                    <li>
+                                        <p>You can test it and see the exception page by creating an exception in the pipeline, right under the UseDeveloperExceptionPage: </p>
+
+                                        <pre><code>app.Run((context) =&gt;
+{
+    throw new InvalidOperationException("Oops!");
+});
+</code></pre></li>
+                                    <li>Run and browse to the app. You should see the detailed exception page. Otherwise, nothing would be displayed with the 500 response. Remove the exception just added. </li>
+                                </ol>
+                            </li>
+                        </ol>
+
+                        <h2>
+                            Command-line arguments
+                        </h2>
+
+                        <p>We're going to need to change the hosting environment locally sometimes. For example, we might want run the Production configuration settings locally while we're developing them. To allow this, we're going to add functionality
+                            to pass command-line arguments into our app. </p>
+
+                        <ol>
+                            <li>
+                                <p>Add this dependency:</p>
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.0.2" /&#62;
+</code></pre></li>
+                            <li>
+                                <p>Add this namespace to <code>Program.cs</code>:</p>
+                                <pre><code>using Microsoft.Extensions.Configuration;
+</code></pre></li>
+                            <li>
+                                <p>Add this configuration on the <code>Program.cs</code> <code>BuildWebHost</code> method:</p>
+
+                                <pre><code>var commandLineConfig = new ConfigurationBuilder()  
+    .AddCommandLine(args)
+    .Build();
+</code></pre></li>
+                            <li>
+                                <p>Then add this right before Build() in the WebHostBuilder initialization, so we can use the configuration object we just created: </p>
+
+                                <pre><code>.UseConfiguration(commandLineConfig)
+</code></pre>
+
+                                <p>Now you can run <code>dotnet run --environment "production"</code> when you want the hosting environment to be that (or you can use staging, etc or your own). Whit this <code>"production"</code> environment parameter you
+                                    can browse <code>localhost:5000/api/articles</code> to verify that the previous added code inside env.IsDevelopment() is avoided. </p>
+                            </li>
+
+                        </ol>
+
+                        <h2>
+                            Configuration files
+                        </h2>
+
+                        <p>Key configuration files in ASP.NET Core include appSettings.json. We're going to add that now, as well as a version for production.</p>
+
+                        <p>In order to read that and other configuration sources, we have to:</p>
+
+                        <ol>
+                            <li>
+                                <p>Add these dependencies:</p>
+
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.2" /&#62;
+</code></pre></li>
+                            <li>
+                                <p>Navigate to <code>Program.cs</code> and add this namespace:</p>
+                                <pre><code>using Microsoft.Extensions.Configuration;
+</code></pre></li>
+                            <li>
+                                <p>Then add this right before Build() in the WebHostBuilder initialization, so we can init the configuration builder: </p>
+
+                                <pre><code>.ConfigureAppConfiguration((builderContext, config) =>
+{
+    IHostingEnvironment env = builderContext.HostingEnvironment;
+
+    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+    config.AddEnvironmentVariables();
+})
+</code></pre></li>
+                            <li>
+                                <p>Navigate to <code>Startup.cs</code> and add this constructor code that will inject the Configuration object:</p>
+
+                                <pre><code>public Startup(IConfiguration configuration)
+{
+    Configuration = configuration;
+}
+
+public IConfiguration Configuration { get; }
+</code></pre></li>
+                            <li>
+                                <p>Add a new file in the root called <code>appSettings.json</code> with this:</p>
+
+                                <pre><code>{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  }
+}
+</code></pre></li>
+                            <li>
+                                <p>Add an <code>appSettings.Production.json</code> file with the same contents from above, but change the <code>Default</code> value to <code>Information</code>.</p>
+
+                                <p>We'll use the appSettings later.</p>
+                            </li>
+                        </ol>
+
+                        <h2>Logging</h2>
+
+                        <ol>
+                            <li>
+                                <p>Add the <code>Microsoft.Extensions.Logging.Console</code> package to the <code>csproj</code> file:</p>
+
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.2" /&#62;
+</code></pre></li>
+                            <li>
+                                <p>Navigate to <code>Program.cs</code> and Add this namespace</p>
+                                <pre><code>using Microsoft.Extensions.Logging;
+</code></pre></li>
+
+                            <p>Navigate to <code>Program.cs</code> and Add this namespace</p>
+                            <pre><code>using Microsoft.Extensions.Logging;
+</code></pre></li>
+
+                            <li>
+                                <p>Then add this right before Build() in the WebHostBuilder initialization, so we can set up the log infraestructure: </p>
+
+                                <pre><code>.ConfigureLogging((hostingContext, logging) => { 
+    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging")); 
+    logging.AddConsole(); logging.AddDebug(); 
+})</code></pre>
+
+                            </li>
+                            <li>
+                                <p>Navigate to <code>Startup.cs</code> and change the <code>Configure</code> method to:</p><pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) 
+{
+    var startupLogger =loggerFactory.CreateLogger&lt;Startup&gt;(); 
+    ...
+                            </code></pre></li>
+                            <li>
+                                <p>Add some log statements to the end of the <code>Configure</code> method to test the settings:</p><pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+{
+  ...
+    startupLogger.LogTrace("Trace test output!");
+    startupLogger.LogDebug("Debug test output!");
+    startupLogger.LogInformation("Info test output!");            
+    startupLogger.LogError("Error test output!");
+    startupLogger.LogCritical("Trace test output!");
+}                            </code></pre></li>
+                            <li>
+                                <p>Run <code>dotnet restore</code> since we added a package, and then <code>dotnet run</code>. In the console, you should see the all the log statements you just added since in <code>appSettings.json</code> it is set to show
+                                    debug log entries and more severe.</p>
+                            </li>
+                            <li>
+                                <p>Run <code>dotnet run --environment "Production"</code> </p>
+
+                                <p>You should no longer see the debug log entry in the console, since the <code>appSettings.Production.json</code> is set to only show informational log entries and more severe. Also note that it says the hosting environment
+                                    in the console, which should be "production". </p>
+                            </li>
+                        </ol>
+
+                        <h2>Dependency Injection
+                        </h2>
+
+                        <p>Here are some key points about the dependency injection that is now baked into ASP.NET Core: </p>
+
+                        <ul>
+                            <li>ASP.NET Core includes a simple built-in container <em>represented by the IServiceProvider interface</em> that supports constructor injection by default, and ASP.NET makes certain services available through DI.</li>
+                            <li>ASP.NET’s container refers to the types it manages as services.</li>
+                            <li>You configure the built-in container’s services in the ConfigureServices method in your application’s Startup class.</li>
+                            <li>The built-in services container is meant to serve the basic needs of the framework and most consumer applications built on it, but has a minimal feature set and is not intended to replace other containers.</li>
+                        </ul>
+
+                        <ol>
+                            <li>
+                                <p>We are going to add a BusinessService to handle the Articles Data Source, and abstract it for the API and the Web Controller</p>
+                                <ol>
+                                    <li>
+                                        <p>Create a new folder caller <code>Business</code> on the root of the project. </p>
+                                    </li>
+                                    <li>
+                                        <p>Add to the new folder a new file called <code>IArticlesService</code> with the following content </p>
+
+                                        <pre><code>using System.Collections.Generic;
+using netCoreWorkshop.Entities;
+                                            
+public interface IArticlesService
+{
+    Article GetOneArticle(int id);
+
+    List&#60;Article&#62; GetAllArticles();
+        
+    Article AddArticle(Article article);
+}
+</code></pre></li>
+                                    <li>
+                                        <p>Add to the same folder new file called <code>ArticlesService</code> that will implement the previously created interface with the following content </p>
+
+                                        <pre><code>using System.Collections.Generic;
+using netCoreWorkshop.Entities;
+using System.Linq;
+
+namespace netCoreWorkshop.Business
+{                                                 
+    public class ArticlesService : IArticlesService
+    {
+        public Article GetOneArticle(int id) => Article.DataSource.Where(m => m.Id == id).FirstOrDefault();
+
+        public List&#60;Article&#62; GetAllArticles() => Article.DataSource;
+            
+        public Article AddArticle(Article article)
+        {
+            article.Id = Article.DataSource.Count() + 1;
+            Article.DataSource.Add(article);
+
+            return article;
+        }
+    }
+}
+</code></pre></li>
+                                    <li>
+                                        <p>Go to <code>Startup.cs</code> and add the following using statement</p>
+
+                                        <pre><code>using netCoreWorkshop.Business;
+</code></pre></li>
+                                    <li>
+                                        <p>On <code>Startup.cs</code> add the following code on <code>ConfigureServices</code> method, to register the ArticleBusinessService on the DI container:</p>
+
+                                        <pre><code>services.AddTransient&#60;IArticlesService, ArticlesService&#62;();
+</code></pre></li>
+                            </li>
+                            <li>
+                                <p>Now, open the <code>ArticlesController.cs</code> and add the following code to inject a reference of <code>IArticlesService</code> on the controller constructor:</p>
+
+                                <pre><code>private readonly IArticlesService articlesService;
+        
+public ArticlesController(IArticlesService articlesService)
+{
+    this.articlesService = articlesService;
+}
+</code></pre></li>
+                            <li>
+                                <p>This change will allow us to inject a reference of <code>ArticlesService</code> at the moment of the automated creation of the controller. Now, we are going to use that reference on the Details and Create actions instead
+                                    of accessing directly to the DataSource. To do this simply call the <code>GetAllArticles</code> or <code>AddArticle</code> methods of the <code>ArticlesService</code> reference like on the following code:
+                                    <p>
+                                        <pre><code>using netCoreWorkshop.Business;
+
+...
+
+public IActionResult Index()
+{
+    return View(articlesService.GetAllArticles());
+}
+
+...
+
+public IActionResult Create(Article article)
+{
+    if (ModelState.IsValid)
+    {
+        articlesService.AddArticle(article);
+        return RedirectToAction("Index");
+    }
+
+    return View(article);
+}
+</code></pre></li>
+
+                            </ol>
+
+                            <h2>Implement the missing Business Service methods</h2>
+                            <ol>
+                                <li>
+                                    <p>In order to have a complete Business Service, we need to implement the Edit, Delete, and GetOne missing methods, and then call them form the WebController and the APIController. Using what you learned from this Task,
+                                        you will try to implement them by yourself. If you have any issues you can ask the instructor to help you or you can check on the src folder of this module to find the complete implementation of the Business Service
+                                        for this app.
+                                    </p>
+                                </li>
+                            </ol>
+                    </article>
+                </div>
+
+
+            </div>
+
+        </div>
+    </body>
+
+</html>

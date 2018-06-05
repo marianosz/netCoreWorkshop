@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  mywebappdeploy:
+    image: ${DOCKER_REGISTRY}mywebappdeploy
+    build:
+      context: .
+      dockerfile: MyWebAppDeploy/Dockerfile

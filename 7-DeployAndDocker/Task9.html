@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 8: Deploying an ASP.NET Core app</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+
+        <body class="logged-out  env-production windows vis-public">
+
+            <div role="main">
+                <div itemscope="" itemtype="http://schema.org/SoftwareSourceCode">
+                    <div id="js-repo-pjax-container" data-pjax-container="">
+                        <div class="container new-discussion-timeline experiment-repo-nav">
+                            <div class="repository-content">
+
+                                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+
+
+                                    <article class="markdown-body entry-content" itemprop="text">
+                                        <h1>Step 8: Deploying an ASP.NET Core app</h1>
+
+                                        <h2>Publishing - preparing for deployment</h2>
+
+                                        <ol>
+											<li>
+											<p>Go to project on the folder HOL\6-DeployAndDocker\src\1
+												<p>
+										</li>
+                                            <li>
+                                                <p>From the console, Build using release mode:
+                                                    <code>dotnet build -c release</code></p>
+                                            </li>
+                                            <li>
+                                                <p>Publish the application - this basically compiles the app's files into an output target, for copying onto a server
+                                                    <code>dotnet publish -c release -o app</code></p>
+
+                                                <p>We're specifying the output directory as 'app' here. This essentially made a folder, app, with the needed files, ready to be run. </p>
+                                            </li>
+                                        </ol>
+
+                                        <h2>
+                                            Deployment</h2>
+
+                                        <p>There are many options for deploying the package (/app) you now have. It's currently possible to deploy to Azure App Services very easily via local git repo. You can deploy in a container(s) to AWS Container Service
+                                            very quickly. </p>
+
+                                        <p>For now we're going to show one of the easiest and fastest ways to deploy - to Azure App Services via a local git repo. </p>
+
+                                        <h1>
+                                            From Local Repo</h1>
+
+                                        <ol>
+                                            <li>
+                                                <p>Create a new Web App in Azure. Select 'Deployment Options' and Local Git as the source. Go back to the app's properties and copy the Git URL listed. Create 'Deployment Credentials' to deploy here from git. You can take advantage of the <a href="https://www.visualstudio.com/en-us/products/visual-studio-dev-essentials-vs.aspx">Visual Studio Dev Essentials</a> subscription in order to get everything you need to build and deploy your app on any platform.</p>
+                                            </li>
+                                            <li>
+                                                <p>Create a local git repo, and set the remote push repo to the above Azure app git URL,
+                                                    <code>git remote add azure &lt;Azure app Git URL&gt;</code></p>
+                                            </li>
+                                        </ol>
+
+                                        <p>Then commit and and push to Azure, <code>git push -u azure master</code>. For more <a href="https://azure.microsoft.com/en-us/documentation/articles/app-service-deploy-local-git/">detailed instruction, see Microsoft's docs</a>.</p>
+
+                                        <h1>
+                                            Running in a Docker container</h1>
+
+
+
+                                        <p>If you would like to use Docker in the devleopment process of your ASP.NET Core app, you can do so easily and it's great practice. You can build your own container to use, or use an existing one. Once you have a
+                                            container running with the ASP.NET Core environment mounted to your souce code, you can do the workshop using Docker to build and run the app. </p>
+
+                                        <h2>
+                                            Build the container</h2>
+
+                                        <p>Take a look at the Dockerfile in the HOL\6-DeployAndDocker\src\1 folder. This specifies what the container will have, and in this case, it's based on the latest public .NET Core image. Then it adds some configuration for
+                                            ASP.NET. You can build the ASP.NET Core container from the provided Dockerfile, following these steps: </p>
+
+                                        <ol>
+                                            <li>
+                                                <p>Get the contents of <code>Dockerfile</code> from the start folder in this section (or go to that folder), and run this command in the same directory as the file:</p>
+
+                                                <pre><code>docker build -t netcore-webapp .</code></pre></li>
+                                            <li>
+                                                <p>See that your image was created correct from the build step above, by listing the images on your machine, by typing <code>docker images</code>. You should see it in the list.</p>
+                                            </li>
+                                        </ol>
+
+                                        <p>For instructions on how to quickly get started with Docker if you don't have it installed and haven't used it, take a look at this article, <a href="https://stormpath.com/blog/tutorial-deploy-asp-net-core-on-linux-with-docker">Deploy an ASP.NET Core Application on Linux with Docker</a>.</p>
+
+                                        <h2>
+                                            Run the container</h2>
+                                        <p>For now, you can run the container you built specifying a port binding for listening and the image name, using the following command. </p>
+
+                                        <ol>
+                                            <li>
+                                                <p>Go to your ASP.NET Core app's directory</p>
+
+                                                <pre><code>docker run -d -p 8080:5000 -t netcore-webapp
+</code></pre></li>
+                                            <li>
+                                                <p>Check the running Containers
+                                                    <pre><code>docker ps
+</code></pre></li>
+                                        </ol>
+
+                                        <li>
+                                            <p>Add an item to the database. You can either use the following curl command, or your favorite tool like Postman:</p>
+
+                                            <pre><code>curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:8080/api/articles
+</code></pre></li>
+                                        <li>
+                                            <p>Navigate to the endpoint, <a href="http://localhost:8080/api/articles">http://localhost:8080/api/articles</a>. </p>
+                                        </li>
+                                        </ol>
+
+                                        <p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the SQLite database.</p>
+
+
+                                        <h2>Docker Compose
+                                        </h2>
+
+                                        <p>You can use Docker Compose to spin up multiple containers at once, in order to create a multi-server environmnet. The most common example would be to spin up a container running the application, and a container
+                                            running the database. </p>
+
+                                        <p>There is a <code>docker-compose.yml</code> file in the HOL\6-DeployAndDocker\src\1 folder that use Docker Compose to spin up an ASP.NET Core container, and a postgreSQL container. We are going to use that folder to build
+                                            a image of the application that works with postgreSQL and then deploy all on composed docker containers</p>
+
+
+                                        <li>
+                                            <p>Open the end folder of this task and run the following command to create the image that works with postgreSQL</p>
+
+                                            <pre><code>docker build -t netcore-webapp-postgres .</code></pre></li>
+                                        <li>
+                                            <p>See that your image was created correct from the build step above, by listing the images on your machine, by typing <code>docker images</code>. You should see it in the list.</p>
+                                        </li>
+                                        </ol>
+
+                                        <h3>
+                                            Build the compose images</h3>
+
+                                        <pre><code>  docker-compose build
+</code></pre>
+
+                                        <h3>And then run them</h3>
+
+                                        <pre><code>  docker-compose up
+</code></pre>
+
+                                        <p>You can add -d at the end so the containers run in the background; without it they would stop when you exit the shell. You can connect to the shell via 'docker exec -ti sh`.</p>
+
+                                        <li>
+                                            <p>Add an item to the database. You can either use the following curl command, or your favorite tool like Postman:</p>
+
+                                            <pre><code>curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:8080/api/articles
+</code></pre></li>
+                                        <li>
+                                            <p>Navigate to the endpoint, <a href="http://localhost:8080/api/articles">http://localhost:8080/api/articles</a>. </p>
+                                        </li>
+                                        </ol>
+
+                                        <p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the Postgres database on the container.</p>
+
+
+
+                                        <h3>To stop the containers:</h3>
+
+                                        <pre><code>  docker-compose stop
+</code></pre>
+
+                                        <p>It is useful to log into your containers. To do that, use this: </p>
+
+                                        <pre><code>  docker exec -ti &lt;Container name&gt; sh
+</code></pre>
+                                    </article>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </body>
+
+</html>

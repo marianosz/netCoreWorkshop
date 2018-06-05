@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 8: .NET Standard</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+        <div role="main">
+            <div class="repository-content">
+                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+
+                    <article class="markdown-body entry-content" itemprop="text">
+                        <h1>Step 8: .NET Standard</h1>
+                        <h2>Objectives</h2>
+
+                        <ul>
+                            <li>Building a .NET Standard common data source library to be used in different project types</li>
+                        </ul>
+
+                        <h2>
+                            Understanding .NET Standard</h2>
+
+                        <ol>
+                            <p>.NET Standard is a specification that represents a set of APIs that all .NET platforms have to implement. This unifies the .NET platforms and prevents future fragmentation.</p>
+                            <p>How does .NET Standard work? .NET Standard is represented by the NuGet package NetStandard.Library which contains the reference assembly netstandard.dll. 
+							At build time, .NET Standard bridges references to existing .NET Framework and PCL assemblies via type forwarding.
+							At runtime, each platform provides an implementation for netstandard.dll that type forwards to its implementation.
+</p>
+							<p>How is .NET Standard different from .NET Core?
+.NET Standard is a specification that covers which APIs a .NET platform has to implement.
+.NET Core is a concrete .NET platform and  implements the .NET Standard.
+</p>
+                        </ol>
+
+                        <h2>Create a .NET Standard Data Library</h2>
+                        <ol>
+                            <li>
+                                <p>Open the project <code>BooksDemo</code> on Visual Studio from the folder <code>6-NetStandard\src\Begin</code>. You will see a classic WinForm app that loads a list of books from an XML file and show it on the screen. Run it with <code>F5</code>. 
+                                </p>
+                            </li>
+                            <li>
+                                <p>Add a new .NET Standard Library project to the solution, using the <code>Add -> New Project</code> dialog.
+								From the project templates list, select <code>Visual C# -> .NET Standard ->  Class Library (.NET Standard)</code>
+								<p>Name the new project <code>BooksDataSource</code>and press <code>Ok</code></p> 
+                            </li>
+							<li>
+                                <p>Delete the default <code>Class1.cs</code> file, and move the file <code>BooksData.cs</code> from the WinForm project <code>BooksDemo</code>, to the .NET Standard Library project <code>BooksDataSource</code>.</p> 
+								<p>Build the .NET Standard Library project <code>BooksDataSource</code> to make sure that the code is Ok.</p> 
+                            </li>
+                            <li>
+                                <p>Now we are going to add the <code>BooksDataSource</code> reference to the WinForm project <code>BooksDemo</code>. For this open the <code>Add Reference</code> dialog from Visual Studio on the <code>BooksDemo</code> project.
+								<p>Select the <code>BooksDataSource</code> project from the project references on the dialog and press Ok</p> 
+								<p>Build the solution and then run the  <code>BooksDemo</code> project to see it working using the new .NET Standard Library Data Source</p> 
+                            </li>
+                        </ol>
+                        <h2>Creating a Web API to consume the .NET Standard Data Library</h2>
+                        <ol>
+                            <li>
+                                <p>Add a new .NET Core Web API project to the solution, using the <code>Add -> New Project</code> dialog.
+								From the project templates list, select <code>Visual C# -> .NET Core ->  ASP.NET Core Web Application</code>
+								<p>Name the new project <code>BooksWebAPI</code>and press <code>Ok</code></p> 
+								<p>On the following dialog select <code>API</code>and press <code>Ok</code></p> 
+                            </li>
+							<li>
+                                <p>Now we are going to add the <code>BooksDataSource</code> reference to the Web API project <code>BooksWebAPI</code>. For this open the <code>Add Reference</code> dialog from Visual Studio on the  <code>BooksWebAPI</code> project.
+								<p>Select the <code>BooksDataSource</code> project from the project references on the dialog and press Ok</p> 
+								<p>Build the solution</p> 
+                            </li>
+                            <li>
+                                <p>Add the following code to the <code>ValuesController.cs</code>. This will create a new <code>/api/values/books</code> endpoint on the WebAPI, that will consume the <code>BooksDataSource</code> library and will return a JSON list with the books from the XML file.
+                                </p>
+                                <pre><code>[HttpGet("books")]
+public IActionResult GetBooks()
+{
+	return Ok(BooksDemo.BooksData.GetBooksAsList());
+}
+</code></pre>
+                            </li>
+                            <li>
+                                <p>Run the Web API and verify that the endpoint is working as expected.
+                                </p>
+                            </li>
+                        </ol>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

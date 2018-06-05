@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 2: Set up a more advanced MVC App</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+        <div role="main">
+            <div class="repository-content">
+                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+                    <article class="markdown-body entry-content" itemprop="text">
+                        <h2>Step 2: Set up a more advanced MVC App</h2>
+                        <h2>Objectives</h2>
+                        <ul>
+                            <li>Set up a more advanced MVC App with list and create functionality</li>
+                            <li>Add a global layout</li>
+                            <li>Serve static files</li>
+                        </ul>
+                        <h2>Let's get started</h2>
+                        <ol>
+                            <li>
+                                <p>Start by changing the <code>Project Sdk</code> from <code>Microsoft.NET.Sdk</code> to <code>Microsoft.NET.Sdk.Web</code>on the csproj file</p>
+                            </li>
+                            <li>
+                                <p>Set up MVC! Add this dependency for MVC to the <code>csproj</code> file. You will have to use your IDE to add using statements in the files referenced</p>
+
+                                <pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.4"/&#62;
+</code></pre>
+                            </li>
+                            <li>
+                                <p>Add this namespaces to the <code>Startup</code> class:</p>
+                                <pre><code>using Microsoft.AspNetCore.Mvc;
+</code></pre>
+                                <li>
+                                    <p>Add this method to the <code>Startup</code> class:</p>
+
+                                    <pre><code>// This method gets called by the runtime. Use this method to add services to the container.
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddMvc();
+}
+</code></pre>
+                                </li>
+                                <li>
+                                    <p>Replace the content of the <code>Configure</code> method on <code>Startup</code> class with the following line to add the MVC middleware:</p>
+
+                                    <pre><code>app.UseMvc(routes =>
+{
+    routes.MapRoute(
+        name: "default",
+        template: "{controller}/{action=Index}/{id?}");
+});
+</code></pre>
+                                </li>
+                                <li>
+                                    <p>Create a <code>Controllers</code> folder in the root, and add a controller to it called <code>ArticlesController</code>. Add the following to it:</p>
+
+                                    <pre><code>using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace netCoreWorkshop.Controllers
+{
+    public class ArticlesController : Controller
+    {
+        [HttpGet]
+        public string Index() =&gt; "Hello, from the controller!";
+    }
+}
+</code></pre>
+                                </li>
+                                <li>
+                                    <p>Run the app and you should be able to hit <code>http://localhost:5000/articles</code>.</p>
+                                </li>
+                        </ol>
+                        <h2>Adding Controller, Model and Views to support details and creation</h2>
+                        <ol>
+                            <li>
+                                <p>Create a folder called <code>Entities</code> and these classes:</p>
+                                <ol>
+                                    <li>
+                                        <p>Add an entity base interface called <code>IEntityBase</code>:</p>
+                                        <pre><code>namespace netCoreWorkshop.Entities
+{
+    public interface IEntityBase
+    {
+        int Id { get; set; }
+    }
+}
+</code></pre>
+                                    </li>
+                                    <li>
+                                        <p>Then create a class called <code>Article</code> with the required attibute for the <code>Title</code> property</p>
+                                        <pre><code>using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace netCoreWorkshop.Entities
+{
+    public class Article : IEntityBase
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public string Title { get; set; }
+    }
+}
+</code></pre>
+                                    </li>
+                                    <li>
+                                        <p>Add a static list of Articles to the <code>Article</code> class. We are going to use this as our first data source:</p>
+                                        <pre><code>public static List&lt;Article&gt; DataSource = new List&lt;Article&gt;(new[] {
+          new Article() { Id = 1, Title = "Intro to ASP.NET Core" },
+          new Article() { Id = 2, Title = "Docker Fundamentals" },
+          new Article() { Id = 3, Title = "Deploying to Azure with Docker" },
+      });
+</code></pre>
+                                    </li>
+                                </ol>
+                        </ol>
+                        <ol>
+                            <li>
+                                <p>Create a folder called <code>Views</code> and add these cshtml views inside a new <code>Articles</code> folder:</p>
+                                <ol>
+                                    <li>
+                                        <p>Add an View called <code>Index</code> with the following content:</p>
+                                        <pre><code>@model IEnumerable&lt;netCoreWorkshop.Entities.Article&gt;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+&lt;h2&gt;Index&lt;/h2&gt;
+
+&lt;p&gt;
+    &lt;a href="/Articles/Create"&gt;Create New&lt;/a&gt;
+&lt;/p&gt;
+&lt;table class="table"&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;
+                @Html.DisplayNameFor(model =&gt; model.Id)
+            &lt;/th&gt;
+            &lt;th&gt;
+                @Html.DisplayNameFor(model =&gt; model.Title)
+            &lt;/th&gt;
+            &lt;th&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+@foreach (var item in Model) {
+        &lt;tr&gt;
+            &lt;td&gt;
+                @Html.DisplayFor(modelItem =&gt; item.Id)
+            &lt;/td&gt;
+            &lt;td&gt;
+                @Html.DisplayFor(modelItem =&gt; item.Title)
+            &lt;/td&gt;
+        &lt;/tr&gt;
+}
+    &lt;/tbody&gt;
+&lt;/table&gt;
+
+                                        </code></pre>
+                                    </li>
+                                    <li>
+                                        <p>Add an View called <code>Create</code> with the following content:</p>
+                                        <pre><code>@model netCoreWorkshop.Entities.Article
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+&lt;h2&gt;Create&lt;/h2&gt;
+&lt;form action="/Articles/Create" method="Post"&gt;
+    &lt;div class="form-horizontal"&gt;
+        &lt;h4&gt;Article&lt;/h4&gt;
+        &lt;hr /&gt;
+        &lt;div asp-validation-summary="ModelOnly" class="text-danger"&gt;&lt;/div&gt;
+        &lt;div class="form-group"&gt;
+            &lt;label asp-for="Title" class="col-md-2 control-label"&gt;&lt;/label&gt;
+            &lt;div class="col-md-10"&gt;
+                &lt;input asp-for="Title" class="form-control" /&gt;
+                &lt;span asp-validation-for="Title" class="text-danger" /&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="form-group"&gt;
+            &lt;div class="col-md-offset-2 col-md-10"&gt;
+                &lt;input type="submit" value="Create" class="btn btn-default" /&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+
+&lt;div&gt;
+    &lt;a asp-action="Index"&gt;Back to List&lt;/a&gt;
+&lt;/div&gt;
+  </code>
+</pre>
+
+                                    </li>
+
+                            </li>
+                            <li>
+                                <p>This cshtml code uses a new feature called <a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/intro"> Tag Helpers</a>. In order to enable them you need to import to the <code>Views</code> folder
+                                    the <code>_ViewImports.cshtml</code> from the assets folder of this module.
+                                </p>
+                            </li>
+                            </ol>
+                            <li>
+                                <p>Setup the <code>Controller</code></p>
+                                <ol>
+                                    <li>
+                                        <p>Add this using to the <code>ArticlesController</code>:</p>
+                                        <pre><code>using netCoreWorkshop.Entities;</code></pre>
+                                    </li>
+                                    <li>
+                                        <p>Change the <code>Index</code> method in <code>ArticlesController</code> to return
+                                            <code>Article</code> and return the articles list as the model.</p>
+                                        <pre><code>  [HttpGet]
+  public IActionResult Index()
+  {
+      return View(Article.DataSource);
+  }
+</code></pre>
+                                    </li>
+                                    <li>
+                                        <p>Add a <code>Create</code> Get and Post methods in <code>ArticlesController</code> to add a new
+                                            <code>Article</code> to the current List</p>
+                                        <pre><code>    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Create(Article article)
+    {
+        if (ModelState.IsValid)
+        {
+            article.Id = Article.DataSource.Count() + 1;
+            Article.DataSource.Add(article);
+            return RedirectToAction("Index");
+        }
+
+        return View(article);
+    }
+</code></pre>
+                                    </li>
+                                    <li>
+                                        <p>Run the application and navigate to <code>localhost:5000/articles</code>. You should see the list of articles and the button to create a new one.</p>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+
+                        <h2>Adding a Shared Layout and Styles</h2>
+                        <ol>
+                            <li>
+                                <p>In order to have a consistent UI through all the app, we are going to add a Default Layout for all the Views on the app.</p>
+                                <ol>
+                                    <li>
+                                        <p>Create a folder called <code>Shared</code> inside <code>Views</code> and add a new file named <code>_Layout.cshtml</code> with the following content:</p>
+                                        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;title&gt;@ViewData["Title"] - MVC&lt;/title&gt;
+    &lt;link rel="stylesheet" href="~/css/site.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container body-content"&gt;
+        @RenderBody()
+        &lt;hr /&gt;
+        &lt;footer&gt;
+            &lt;p&gt;&copy; 2016 - MVC&lt;/p&gt;
+        &lt;/footer&gt;
+    &lt;/div&gt;
+    @RenderSection("scripts", required: false)
+&lt;/body&gt;
+&lt;/html&gt;
+  </code>
+</pre>
+
+                                    </li>
+                                    <li>
+                                        <p>Create a folder called <code>wwwroot</code> on the root on the project. We are going to use that folder to host all the static content like css, images, html pages, etc. On that new folder create a <code>css</code>                                            folder and copy the site.css file from the Assets folder of this lab.</p>
+                                    </li>
+                                    <li>
+                                        <p>On the Views folder create a file named <code>_ViewStart.cshtml</code> content:</p>
+                                        <pre><code>@{
+    Layout = "_Layout";
+} </code>
+</pre>
+                                        <p>This last file will setup <code>_Layout.cshtml</code> as the default layout for all the Views on the app.
+                                    </li>
+                                    <li>
+                                        <p>Now we need a last step. In order for the web server, to serve the css file, we need to add some code to enable that feature. This is implemented on the <code>Statics Files middleware</code>, so we need to configure
+                                            it. Add the following reference on the csproj file:</p>
+                                        <pre><code>&lt;PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.3" /&gt;</code>
+</pre>
+                                    </li>
+                                    <li>
+                                        <p>Configure the <code>Statics Files middleware</code> on the <code>Startup.cs</code> class, inside the <code>Confure</code> method, adding the following line:</p>
+                                        <pre><code> app.UseStaticFiles();</code>
+</pre>
+                                        <p>This middleware will enable the feature to serve statics files like css, images, etc.</p>
+                                    </li>
+                                    <li>
+                                        <p>Run the application and navigate to <code>localhost:5000/articles</code>. You should see the list of articles with the new styled UI.</p>
+                                    </li>
+                                </ol>
+
+                                <h2>Implement the missing methods for CRUDL</h2>
+                                <ol>
+                                    <li>
+                                        <p>In order to have a full CRUDL app, we need to implement the Edit, Delete, and Details missing methods. Using what you learned from this Task, you will try to implement them by yourself. If you have any issues you
+                                            can ask the instructor to help you or you can check on the src folder of this module to find the complete implementation of the CRUDL for this app.
+                                        </p>
+                                    </li>
+                                </ol>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

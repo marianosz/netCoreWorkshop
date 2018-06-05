@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 7: Writing custom middleware</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+        <div role="main">
+            <div class="repository-content">
+                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+
+                    <article class="markdown-body entry-content" itemprop="text">
+                        <h1>Step 7: Writing custom middleware</h1>
+                        <h2>Objectives</h2>
+
+                        <ul>
+                            <li>Building a middleware class</li>
+                            <li>Use configuration and Options from dependency injection</li>
+                        </ul>
+
+                        <h2>
+                            Understanding middlewares</h2>
+
+                        <ol>
+                            <p>Middleware are components that are assembled into an application pipeline to handle requests and responses. Each component can choose whether to pass the request on to the next component in the pipeline, and can perform certain
+                                actions before and after the next component in the pipeline. Request delegates are used to build this request pipeline, which are then used to handle each HTTP request to your application.</p>
+                            <p>Request delegates are configured using Run, Map, and Use extension methods on the IApplicationBuilder type that is passed into the Configure method in the Startup class. An individual request delegate can be specified in-line
+                                as an anonymous method, or it can be defined in a reusable class. These reusable classes are middleware, or middleware components. Each middleware component in the request pipeline is responsible for invoking the next component
+                                in the chain, or choosing to short-circuit the chain if appropriate.</p>
+                        </ol>
+
+                        <h2>Create an API Key Authentication Middleware</h2>
+                        <ol>
+                            <li>
+                                <p>Open the <code>Startup.cs</code> file and add the following code before <code>app.UseStaticFiles();</code> which creates an inline middleware that validate the request reading an <code>API Key</code> from a specific header
+                                    for Web API request.
+                                </p>
+                                <pre><code>app.Use(async (context, next) =>
+{
+    if (context.Request.Path.Value.StartsWith("/api"))
+    {
+        if (!context.Request.Headers.ContainsKey("api-key") ||
+            context.Request.Headers["api-key"] != "asdfgh")
+        {
+            context.Response.StatusCode = 401;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync("Authentication required to execute this request");
+
+            return;
+        }
+    }
+
+    await next();
+});
+
+</code></pre></li>
+                            <li>
+                                <p>Run the application</p>
+
+                                <pre><code>dotnet run</code></pre>
+                            </li>
+
+                            <li>
+                                <p>You can navigate to <code>http://localhost:5000/api/articles</code>to test the new middleware. You will see a <code>Authentication required to execute this request</code> message</p>
+                            </li>
+                            <li>
+                                <p>To avoid that validation message, you need to send a <code>api-key</code> header on the request with the key value (in this example is <code>asdfgh</code>).</p>
+
+                                <pre><code>curl -H "Content-Type: application/json" -H "api-key: asdfgh" -X GET http://localhost:5000/api/articles
+</code></pre>
+                            </li>
+                        </ol>
+                        <h2>Moving the middleware to its own type</h2>
+                        <ol>
+                            <li>
+                                <p>Create a new folder named <code>Middlewares</code>and add a new class named <code>APIKeyMiddleware.cs</code> on it.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>Add a constructor to <code>APIKeyMiddleware.cs</code> that takes a <code>RequestDelegate</code> parameter and assigns it to a private field using the following code snippet.
+                                </p>
+                                <pre><code>using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+
+namespace netCoreWorkshop.Middlewares
+{
+    public class APIKeyMiddleware
+    {
+        private readonly RequestDelegate next;
+
+        public APIKeyMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+        }
+    }
+}
+</code></pre>
+                            </li>
+                            <li>
+                                <p>Add the following method with the content of the inline middleware delegate you previously added to the <code>Startup.cs</code> file.
+                                </p>
+
+                                <pre><code>public async Task Invoke(HttpContext context)
+{
+    if (context.Request.Path.Value.StartsWith("/api"))
+    {
+        if (!context.Request.Headers.ContainsKey("api-key") ||
+            context.Request.Headers["api-key"] != "asdfgh")
+        {
+            context.Response.StatusCode = 401;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync("Authentication required to execute this request");
+
+            return;
+        }
+    }
+
+    // Call the next delegate/middleware in the pipeline
+    await this.next(context);
+}</code></pre>
+                            </li>
+                            <li>
+                                <p>At the bottom of the <code>APIKeyMiddleware.cs</code> file, inside the namespace declaration, add a class that exposes the middleware via an extension method on <code>IApplicationBuilder</code>.
+                                </p>
+
+                                <pre><code>public static class APIKeyMiddlewareExtensions
+{
+    public static IApplicationBuilder UseAPIKey(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware&#60;APIKeyMiddleware&#62;();
+    }
+}</code></pre>
+                            </li>
+                            <li>
+                                <p>Back in the application's <code>Startup.cs</code> file, add an using for the namespace <code>netCoreWorkshop.Middlewares</code> then replace the inline middleware delegate with the call to the <code>app.UseAPIKey()</code>                                    method to add your new middleware class to the HTTP pipeline.
+                                </p>
+                            </li>
+
+                            <li>
+                                <p>Run the application and verify that the middleware is now running as a class.
+                                </p>
+                            </li>
+                        </ol>
+                        <h2>Adding options to middleware</h2>
+                        <ol>
+                            <li>
+                                <p>Inside the <code>Middleware</code> folder add a new class named <code>APIKeyOptions.cs</code>.
+                                </p>
+                            </li>
+                            <li>
+                                <p>In the new class, add a property named APIKeyValue with String as type.</code>.
+                                </p>
+                                <pre><code>using System;
+
+namespace netCoreWorkshop.Middlewares
+{
+    public class APIKeyOptions
+    {
+        public String APIKeyValue { get; set; }
+    }
+}
+</code></pre></li>
+                            <li>
+                                <p>Open the <code>APIKeyMiddleware.cs</code> file and update the <code>APIKeyMiddleware</code> constructor to take the <code>APIKeyOptions</code> parameter as is shown in the following code.</p>
+                                <pre><code>public class APIKeyMiddleware
+{
+    private readonly RequestDelegate next;
+    private readonly APIKeyOptions options;
+
+    public APIKeyMiddleware(RequestDelegate next, APIKeyOptions options)
+    {
+        this.next = next;
+        this.options = options;
+    }
+
+    //...
+}
+</code></pre></li>
+
+                            <li>
+                                <p>Update the <code>Invoke</code> method of the middleware to use the <code>APIKeyValue</code> property from options.</p>
+
+                                <pre><code>...
+if (context.Request.Path.Value.StartsWith("/api"))
+{
+    var apiKey = "asdfgh";
+
+    if (options?.APIKeyValue != null)
+    {
+        apiKey = options.APIKeyValue;
+    }
+
+    if (!context.Request.Headers.ContainsKey("api-key") ||
+        context.Request.Headers["api-key"] != apiKey)
+    {
+      ...
+    }
+}
+</code></pre></li>
+                            <li>
+                                <p>In the same file, replace the <code>APIKeyMiddlewareExtensions</code> class implementation with the following code which adds an overload to the <code>UseAPIKey</code> method that takes the <code>APIKeyOptions</code> and
+                                    passes them into the <code>UseMiddleware&#60;APIKeyMiddleware&#62;</code> call.</p>
+                                <pre><code>public static IApplicationBuilder UseAPIKey(this IApplicationBuilder builder)
+{
+    return builder.UseAPIKey(new APIKeyOptions());
+}
+
+public static IApplicationBuilder UseAPIKey(this IApplicationBuilder builder, APIKeyOptions options)
+{
+    return builder.UseMiddleware&#60;APIKeyMiddleware&#62;(options);
+}
+
+</code></pre></li>
+
+                            <li>
+                                <p>Open the <code>Startup.cs</code> file and set the APIKey value in the <code>Configure</code> method to some default value, e.g. "hgfdsa".</p>
+                                <pre><code>app.UseAPIKey(new APIKeyOptions
+{
+     APIKeyValue = "hgfdsa",
+});
+</code></pre></li>
+                            <li>
+                                <p>Run the application and verify that the new key is the one being used for request validation. This old header will not pass the validation:
+                                    <pre><code>curl -H "Content-Type: application/json" -H "api-key: asdfgh" -X GET http://localhost:5000/api/articles
+</code></pre>
+                            </li>
+                            <li>
+                                <p>But this new header will:
+                                    <pre><code>curl -H "Content-Type: application/json" -H "api-key: hgfdsa" -X GET http://localhost:5000/api/articles
+</code></pre>
+                            </li>
+
+                        </ol>
+                        <h2>Reding options from configuration</h2>
+                        <p>In this task, you'll use the new Configuration system to loading the default API Key value, using <code>Options</code> feature from the dependency injection system.</p>
+                        <ol>
+                            <li>
+                                <p>Add this dependency to add the <code>Options</code> feature from the dependency injection system.</p>
+
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.2" /&#62;</code></pre></li>
+                            <li>
+                                <p>Add the following section with the APIKey configuration to the <code>appSettings.json</code>
+                                </p>
+
+                                <pre><code>"APIKeyOptions": {
+    "APIKeyValue": "hgfdsa"
+}
+</code></pre>
+                            </li>
+                            <li>
+                                <p>Change the <code>APIKeyMiddleware</code> constructor to take <code>IOptions&#60;APIKeyOptions&#62;</code> instead of <code>APIKeyOptions</code> and obtain the value of the options parameter. Resolve the missing dependencies.
+                                </p>
+
+                                <pre><code>public APIKeyMiddleware(RequestDelegate next, IOptions&#60;APIKeyOptions&#62; options)
+{
+    this.next = next;
+    this.options = options.Value;
+}
+
+</code></pre>
+                            </li>
+
+                            <li>
+                                <p>Update the <code>APIKeyMiddlewareExtensions</code> class removing the method with the options parameter and calling <code>UseMiddleware
+                                    &#60;APIKeyMiddleware&#62;</code>in the other method as shown in the following code.
+                                </p>
+
+                                <pre><code>public static class APIKeyMiddlewareExtensions
+{
+    public static IApplicationBuilder UseAPIKey(this IApplicationBuilder builder)
+    {
+         return builder.UseMiddleware&#60;APIKeyMiddleware&#62;();
+    }
+}
+</code></pre>
+                            </li>
+                            <li>
+                                <p><code>In Startup.cs</code> change the <code>UseAPIKey</code> middleware to not take any arguments.
+                                </p>
+
+                                <pre><code>app.UseAPIKey();
+</code></pre>
+                            </li>
+
+                            <li>
+                                <p>In the <code>ConfigureServices</code> method located in the same file, add a line that configures the API Key using the <code>services.Configure&#60;APIKeyOptions&#62;</code> method and also add a call to the <code>AddOptions</code>                                    method as shown in the following code.
+                                </p>
+
+                                <pre><code>public void ConfigureServices(IServiceCollection services)
+{
+    // Setup options with DI
+    services.AddOptions();
+    
+    services.Configure&#60;APIKeyOptions&#62;(Configuration.GetSection("APIKeyOptions"));
+}
+
+</code></pre>
+                            </li>
+                            <li>
+                                <p>Run the application and verify that options are now being configured from the dependency injection system.</p>
+                                <pre><code>curl -H "Content-Type: application/json" -H "api-key: hgfdsa" -X GET http://localhost:5000/api/articles
+</code></pre>
+                            </li>
+                        </ol>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

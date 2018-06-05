@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 6: Entity Framework and Data Access Infrastructure</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+        <div role="main">
+            <div class="repository-content">
+                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+
+                    <article class="markdown-body entry-content" itemprop="text">
+                        <h1>Step 6: Entity Framework and Data Access Infrastructure</h1>
+                        <h2>Objectives</h2>
+
+                        <ul>
+                            <li>Set up Entity Framework Core 2.0</li>
+                            <li>Wire it to a database (SQLite in this case)</li>
+                            <li>Use it to get and post some data to the database, from our Business Service </li>
+                        </ul>
+
+                        <h2>
+                            Set up database context and other standard Entity Framework infrastructure</h2>
+
+                        <ol>
+                            <li>
+                                <p>Add these dependencies and tools for Entity Framework and SQLite, as we'll use this lightweight database for our app:</p>
+
+                                <pre><code>&#60;PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.3" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.3" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.3" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" /&#62;
+...
+&#60;ItemGroup&#62;
+    &#60;DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" /&#62;
+&#60;/ItemGroup&#62;
+  
+</code></pre></li>
+                            <li>
+                                <p>Navigate to <code>Startup.cs</code> and add this namespace:</p>
+                                <pre><code>using Microsoft.EntityFrameworkCore;
+</code></pre></li>
+                            <li>
+                                <p>Set up Entity Framework and register database to <code>Startup.ConfigureServices:</code></p>
+
+                                <pre><code>services.AddDbContext&lt;Data.ArticlesContext&gt;(options =&gt;
+{
+    options.UseSqlite(Configuration.GetConnectionString("Articles"));
+});
+</code></pre></li>
+                            <li>
+                                <p>Add the connection string to appSettings:</p>
+
+                                <pre><code>{
+  "ConnectionStrings" : {
+      "Articles": "Data Source=articles.db"
+  },
+  ...
+}
+</code></pre></li>
+                            <li>
+                                <p>Create a new <code>ArticlesContext</code> context class to represent the database in a new <code>Data</code> folder:</p>
+
+                                <pre><code>using Microsoft.EntityFrameworkCore;
+using netCoreWorkshop.Entities;
+
+namespace netCoreWorkshop.Data
+{
+    public class ArticlesContext : DbContext
+    {
+        public ArticlesContext(DbContextOptions<ArticlesContext> options) :
+            base(options)
+        {
+        }
+
+        public DbSet&lt;Article&gt; Articles { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Filename=./articles.db");
+        }
+    }
+}
+</code></pre></li>
+                            <li>
+                                <p>Navigate to <code>ArticlesService.cs</code> and add these namespaces:</p>
+                                <pre><code>using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using netCoreWorkshop.Data;
+</code></pre></li>
+
+                            <li>
+                                <p>On the <code>ArticlesService</code> class inject the database context into the constructor of the service. While at it, add a logger so we can try it out. Add the following property and constructor parameter to utilize the
+                                    logging framework you set up earlier. </p>
+
+                                <pre><code>private readonly ArticlesContext _context;
+private readonly ILogger&lt;ArticlesService&gt; _logger; 
+
+public ArticlesService(ArticlesContext context, ILogger&lt;ArticlesService&gt; logger)
+{
+    _context = context;
+    _logger = logger;
+}
+</code></pre></li>
+                            <li>
+                                <p>Update the <code>GetOneArticle</code> method in <code>ArticlesService</code> to use the database context, as follows.</p>
+                                <pre><code>public Article GetOneArticle(int id)
+{
+    var article = _context.Articles.SingleOrDefault(m => m.Id == id);
+    
+    return article;
+}</code></pre>
+
+                                <p>You can also replace the GetAllArticles method to return all items added to the database,</p>
+
+                                <div class="highlight highlight-source-cs"><pre>public List&lt;Article&gt GetAllArticles() =&gt; _context.Set&lt;Article&gt;().ToList();</pre></div>
+                            </li>
+                            <li>
+                                <p> Also update the <code>AddArticle</code> method so we can populate the database.</p>
+
+                                <pre><code>public Article AddArticle(Article article)
+{
+    _logger.LogDebug("Starting save");
+
+    var newArticle = new Article { Title = article.Title };
+
+    _context.Articles.Add(newArticle);
+    _context.SaveChanges(); 
+
+    _logger.LogDebug("Finished save");
+
+    return newArticle;
+}
+</code></pre></li>
+                        </ol>
+
+                        <p>Now, from the command line:</p>
+
+                        <ol>
+                            <li>
+                                <p>Load all the dependencies with <code>dotnet restore</code></p>
+                            </li>
+                            <li>
+                                <p>Build with <code>dotnet build</code></p>
+                            </li>
+                            <li>
+                                <p>Run migrations with:</p>
+
+                                <p><code>dotnet ef migrations add Initial</code></p>
+                            </li>
+                            <li>
+                                <p>Apply the changes:</p>
+
+                                <p><code>dotnet ef database update</code></p>
+                            </li>
+
+                            <li>
+                                <p>Run the application</p>
+
+                                <p><code>dotnet run</code></p>
+                            </li>
+
+                            <li>
+                                <p>Add an item to the database. You can either use the following curl command on bash, or your favorite tool like Postman:</p>
+
+                                <p><code>
+curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:5000/api/articles
+</code></p>
+                            </li>
+                            <li>
+                                <p>Navigate to the endpoint, <a href="http://localhost:5000/api/articles">http://localhost:5000/api/articles</a>. </p>
+                            </li>
+                        </ol>
+
+                        <p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the SQLite database.</p>
+
+                        <p>Also, note the log messages from the statements you added when saving an item. </p>
+
+                        <h3>Some ef commands:</h3>
+
+                        <ul>
+                            <li>add – Add a new migration</li>
+                            <li>apply – Apply migrations to the database</li>
+                            <li>list – List the migrations</li>
+                            <li>script – Generate a SQL script from migrations</li>
+                            <li>remove – Remove the last migration</li>
+                        </ul>
+
+                        <h2>Implement the missing Business Service changes to use DbContext</h2>
+                        <ol>
+                            <li>
+                                <p>In order to have a complete implementation of Entity Framework, we need to implement the missing Business Service changes to use DbContext. If you have any issues you can ask the instructor to help you or you can check
+                                    on the src folder of this module to find the complete implementation of the Business Service for this app.
+                                </p>
+                            </li>
+                        </ol>
+                    </article>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 1: Set up an Basic MVC App</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+        <div role="main">
+            <div class="repository-content">
+                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+                    <article class="markdown-body entry-content" itemprop="text">
+                        <h2>Step 1: Set up an Basic MVC App</h2>
+                        <h2>Objectives</h2>
+
+                        <ul>
+                            <li>Create a basic .NET Core app using the .NET CLI</li>
+                            <li>Put in the core code needed to set up ASP.NET Core - its dependencies and host initialization</li>
+                        </ul>
+
+                        <h2>Let's get started</h2>
+
+                        <ol>
+                            <li>Open a command line, create and go into a new directory, and run <code>dotnet new console -n netCoreWorkshop</code>, then on the <code>netCoreWorkshop</code> folder, run <code>dotnet restore</code>, then <code>dotnet run</code>                                to create &amp; run a .NET Core 'Hello World!' app.
+                            </li>
+                            <li>
+                                <p>Type <code>code .</code> to open VS Code for directory or open the solution using Visual Studio 2017. Add .NET Core and Kestrel dependencies to the .csproj file (If you are using Visual Studio you can add the references from the NuGet UI):</p>
+
+                                <pre><code>&#60;ItemGroup&#62;
+    &#60;PackageReference Include="Microsoft.AspNetCore" Version="2.0.3" /&#62;
+    &#60;PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.3" /&#62;
+&#60;/ItemGroup&#62;
+</code></pre></li>
+                            <li>
+                                <p>Add ASP.NET Core setup code to the <code>Main</code> method (entry point of all .NET Core applications, including ASP.NET Core) in <code>Program.cs</code>, replacing the content of the class:</p>
+
+                                <pre><code>// Minimal ASP.NET setup in Main method
+
+public static void Main(string[] args)
+{
+    BuildWebHost(args).Run();
+}
+
+public static IWebHost BuildWebHost(string[] args) 
+{
+    var webHost = new WebHostBuilder()
+        .UseKestrel()
+        .UseContentRoot(Directory.GetCurrentDirectory())
+        .Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World!")))
+        .Build();
+                
+    return webHost;			
+}
+</code></pre>
+                            </li>
+
+                            <li>
+                                <p>Add these namespaces. These are needed and can be added manually, though you can use the IDE (if VS Code + C# extension, or VS)</p>
+                                <pre><code>using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+</code></pre>
+
+                                <p>At this point, you have a minimal ASP.NET Core app set up. Run <code>dotnet restore</code>, then <code>dotnet run</code>. You can navigate to <code>http://localhost:5000</code> to get a hello world response.</p>
+                            </li>
+                            <li>
+                                <p>Move configuration of the host to the Startup class, per convention.</p>
+
+                                <ol>
+                                    <li>
+                                        <p>Remove the host configuration:</p>
+                                        <pre><code>.Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")))  
+</code></pre></li>
+
+                                    <li>
+                                        <p>Tweak your Program.cs to use a Startup class for ASP.NET Core host configuration. For this add the following code before the call to <code>.Build()</code>:</p>
+
+                                        <pre><code>.UseStartup&lt;Startup&gt;()
+</code></pre></li>
+                                    <li>
+                                        <p>Create a class in the project root called Startup.cs</p>
+                                    </li>
+                                    <li>
+                                        <p>Add this to your Startup.cs class:</p>
+
+                                        <pre><code>using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace netCoreWorkshop
+{
+    public class Startup
+    {
+        public void Configure(IApplicationBuilder app)
+        {
+            app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!"));
+        }
+    }
+}
+</code></pre>
+
+                                        <p>The method <code>Configure</code> gets called by the runtime, and is required. Use this method to configure the HTTP request pipeline. <code>IApplicationBuilder</code> is required; provides the mechanisms to configure
+                                            an application’s request pipeline. Middlewares are configured here.
+                                        </p>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>
+                                <p>We're going to add a watcher now so when we change our source files, it rebuilds and re-runs our app. Add this to <code>.csproj</code>:</p>
+
+                                <pre><code>&#60;ItemGroup&#62;
+    &#60;DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.2" /&#62;
+&#60;/ItemGroup>
+</code></pre>
+
+                                <ol>
+                                    <li>We have to run <code>dotnet restore</code> because we changed our project.json and have a new dependency to pull in. </li>
+                                    <li>Now when we run <code>dotnet watch run</code>, the watcher will be active. Change the Hello World text, save, and see in the command prompt that it automatically rebuilds and re-runs the app.</li>
+                                </ol>
+                            </li>
+                        </ol>
+
+
+                    </article>
+                </div>
+
+
+            </div>
+
+        </div>
+    </body>
+
+</html>

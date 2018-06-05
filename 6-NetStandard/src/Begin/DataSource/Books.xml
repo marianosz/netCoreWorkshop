@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Books.xml stores information about Mahesh Chand and related books -->
+<books>
+  <book ISBN="9831123212" yearpublished="2002">
+    <title>A Programmer's Guide to ADO.NET using C#</title>
+    <author>
+      <first-name>Mahesh</first-name>
+      <last-name>Chand</last-name>
+    </author>
+    <publisher>Apress</publisher>
+    <price>44.99</price>
+  </book>
+  <book ISBN="2390923" yearpublished="2012">
+    <title>Visual C#</title>
+    <author>
+      <first-name>Raj</first-name>
+      <last-name>Kumar</last-name>
+    </author>
+    <publisher>Microsoft Press</publisher>
+    <price>49.99</price>
+  </book>
+  <book ISBN="10-123212" yearpublished="2008">
+    <title>Hands on WCF</title>
+    <author>
+      <first-name>Praveen</first-name>
+      <last-name>Kumar</last-name>
+    </author>
+    <publisher>Mindcracker Press</publisher>
+    <price>34.99</price>
+  </book>
+  <book ISBN="333-234239" yearpublished="2013">
+    <title>Building Standalone Applications</title>
+    <author>
+      <first-name>Mahesh</first-name>
+      <last-name>Chand</last-name>
+    </author>
+    <publisher>Apress</publisher>
+    <price>44.99</price>
+  </book>
+  <book ISBN="88-232361" yearpublished="2005">
+    <title>Development using Visual Studio 2012</title>
+    <author>
+      <first-name>Dhananjay</first-name>
+      <last-name>Kumar</last-name>
+    </author>
+    <publisher>Mindcracker Press</publisher>
+    <price>54.99</price>
+  </book>
+</books>

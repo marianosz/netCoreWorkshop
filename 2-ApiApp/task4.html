@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en" class=" is-copy-enabled is-u2f-enabled">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Step 4: Set up an API</title>
+
+    <link href="./style.css" rel="stylesheet">
+
+    <body>
+        <div role="main">
+            <div class="repository-content">
+                <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
+
+                    <article class="markdown-body entry-content" itemprop="text">
+                        <h2>Step 4: Set up an API</h2>
+
+                        <p>Set up a basic endpoint with the Web API</p>
+
+                        <h2>Objectives</h2>
+                        <ul>
+                            <li>Set up a basic endpoint</li>
+                            <li>Handle json data</li>
+                        </ul>
+
+
+                        <ol>
+                            <li>
+                                <p>Create a API folder in the root, and add a controller to it called <code>ArticlesApiController</code> to serve the API requests. Add the following to it:</p>
+
+                                <pre><code>using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace netCoreWorkshop.API
+{
+    [Route("/api/articles")]
+    public class ArticlesApiController : Controller
+    {
+        [HttpGet]
+        public string Get() =&gt; "Hello, from the controller!";
+    }
+}
+</code></pre>
+                            </li>
+
+                            <li>
+                                <p>Run the app and you should be able to hit localhost:5000/api/articles.</p>
+                            </li>
+                        </ol>
+
+                        <h2>Returning JSON from the API</h2>
+
+                        <ol>
+
+                            <li>
+                                <p>Add this using to the <code>ArticlesApiController</code>:</p>
+                                <pre><code>using netCoreWorkshop.Entities;</code></pre></li>
+
+
+                            <p>Change the <code>Get</code> method in <code>ArticlesApiController</code> to return <code>IActionResult</code> and return using the status code method with the article with the id passed in.</p>
+
+                            <pre><code>[HttpGet("{id}")]
+public IActionResult Get(int id)
+{
+    var article = Article.DataSource.Where(a => a.Id == id).FirstOrDefault();
+
+    if (article == null)
+    {
+        return NotFound();
+    }
+
+    return Ok(Article.DataSource.Single(a => a.Id == id));
+}
+</code></pre></li>
+
+
+                            <li>
+                                <p>You can also add this method, to return all items added to the database,</p>
+
+                                <div class="highlight highlight-source-cs"><pre><code>[HttpGet]
+public IActionResult Get() => Ok(Article.DataSource);</code></pre></div>
+                            </li>
+
+                            <li>
+                                <p>Run the application and navigate to <code>localhost:5000/api/articles/1</code>. You should see a JSON payload of that article.</p>
+                            </li>
+                        </ol>
+                        </li>
+                        </ol>
+
+                        <h2>Posting and article as JSON to the API</h2>
+
+                        <ol>
+
+                            <li>
+                                <p>Create a post method so we can create new Articles using json data</p>
+
+                                <pre><code>[HttpPost]
+public IActionResult Create([FromBody]Article article)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    Article.DataSource.Add(new Article { Title = article.Title, Id = Article.DataSource.Count() });
+
+    return CreatedAtAction(nameof(Get), new { id = article.Title }, article);
+}
+</code></pre></li>
+
+                            <li>
+                                <p>Run the application</p>
+
+                                <li>
+                                    <p>Add an item to the article collection. You can either use the following curl command on bash, or your favorite tool like Postman:</p>
+
+                                    <p><code>
+curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:5000/api/articles
+</code></p>
+                                </li>
+                                <li>
+                                    <p>Navigate to the endpoint, <a href="http://localhost:5000/api/articles">http://localhost:5000/api/articles</a> to see the added item. </p>
+                                </li>
+                        </ol>
+
+
+
+
+                        </ol>
+                        </ol>
+
+                        <h2>Implement the missing API methods</h2>
+                        <ol>
+                            <li>
+                                <p>In order to have a full API, we need to implement the Edit, Delete, and Details missing methods. Using what you learned from this Task, you will try to implement them by yourself. If you have any issues you can ask the
+                                    instructor to help you or you can check on the src folder of this module to find the complete implementation of the API for this app.
+                                </p>
+                            </li>
+                        </ol>
+                    </article>
+                </div>
+
+
+            </div>
+
+        </div>
+    </body>
+
+</html>

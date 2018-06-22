@@ -6,23 +6,15 @@ using System.IO;
 
 namespace netCoreWorkshop
 {
-    class Program
-    {
-        // Minimal ASP.NET setup in Main method
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			CreateWebHostBuilder(args).Build().Run();
+		}
 
-        public static IWebHost BuildWebHost(string[] args) 
-        {
-            var webHost = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .Build();
-
-            return webHost;
-        }
-    }
+		public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+			WebHost.CreateDefaultBuilder(args)
+				.UseStartup<Startup>();
+	}
 }

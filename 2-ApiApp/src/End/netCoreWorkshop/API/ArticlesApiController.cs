@@ -34,7 +34,7 @@ namespace netCoreWorkshop.API
 
             Article.DataSource.Add(new Article { Title = article.Title, Id = Article.DataSource.Count() });
 
-            return CreatedAtAction(nameof(Get), new { id = article.Title }, article);
+            return CreatedAtAction(nameof(Create), new { id = article.Title }, article);
         }
 
         

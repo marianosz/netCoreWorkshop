@@ -56,7 +56,7 @@
                                     <li>
                                         <p>To do that, first add this dependency: </p>
 
-                                        <pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.3" /&#62;
+                                        <pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" /&#62;
 </code></pre></li>
                                     <li>
                                         <p>Then add these namespaces to Startup.cs:</p>
@@ -101,7 +101,7 @@ using Microsoft.AspNetCore.Hosting;
                         <ol>
                             <li>
                                 <p>Add this dependency:</p>
-                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.0.2" /&#62;
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.1.1" /&#62;
 </code></pre></li>
                             <li>
                                 <p>Add this namespace to <code>Program.cs</code>:</p>
@@ -115,7 +115,7 @@ using Microsoft.AspNetCore.Hosting;
     .Build();
 </code></pre></li>
                             <li>
-                                <p>Then add this right before Build() in the WebHostBuilder initialization, so we can use the configuration object we just created: </p>
+                                <p>Then add this right before <code>UseStartup&lt;Startup&gt;()</code> in the <code>CreateDefaultBuilder</code> initialization, so we can use the configuration object we just created: </p>
 
                                 <pre><code>.UseConfiguration(commandLineConfig)
 </code></pre>
@@ -138,14 +138,14 @@ using Microsoft.AspNetCore.Hosting;
                             <li>
                                 <p>Add these dependencies:</p>
 
-                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.2" /&#62;
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" /&#62;
 </code></pre></li>
                             <li>
                                 <p>Navigate to <code>Program.cs</code> and add this namespace:</p>
                                 <pre><code>using Microsoft.Extensions.Configuration;
 </code></pre></li>
                             <li>
-                                <p>Then add this right before Build() in the WebHostBuilder initialization, so we can init the configuration builder: </p>
+                                <p>Then add this right before <code>UseStartup&lt;Startup&gt;()</code> in the <code>CreateDefaultBuilder</code> initialization, so we can init the configuration builder: </p>
 
                                 <pre><code>.ConfigureAppConfiguration((builderContext, config) =>
 {
@@ -194,7 +194,7 @@ public IConfiguration Configuration { get; }
                             <li>
                                 <p>Add the <code>Microsoft.Extensions.Logging.Console</code> package to the <code>csproj</code> file:</p>
 
-                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.2" /&#62;
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" /&#62;
 </code></pre></li>
                             <li>
                                 <p>Navigate to <code>Program.cs</code> and Add this namespace</p>
@@ -206,18 +206,19 @@ public IConfiguration Configuration { get; }
 </code></pre></li>
 
                             <li>
-                                <p>Then add this right before Build() in the WebHostBuilder initialization, so we can set up the log infraestructure: </p>
+                                <p>Then add this right before <code>UseStartup&lt;Startup&gt;()</code> in the <code>CreateDefaultBuilder</code> initialization, so we can set up the log infraestructure: </p>
 
                                 <pre><code>.ConfigureLogging((hostingContext, logging) => { 
     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging")); 
-    logging.AddConsole(); logging.AddDebug(); 
+    logging.AddConsole(); 
+	logging.AddDebug(); 
 })</code></pre>
 
                             </li>
                             <li>
                                 <p>Navigate to <code>Startup.cs</code> and change the <code>Configure</code> method to:</p><pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) 
 {
-    var startupLogger =loggerFactory.CreateLogger&lt;Startup&gt;(); 
+    var startupLogger = loggerFactory.CreateLogger&lt;Startup&gt;(); 
     ...
                             </code></pre></li>
                             <li>

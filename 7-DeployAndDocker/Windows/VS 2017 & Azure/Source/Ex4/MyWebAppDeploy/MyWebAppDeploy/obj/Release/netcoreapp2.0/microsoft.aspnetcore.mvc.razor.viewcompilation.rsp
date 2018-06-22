@@ -1,0 +1,12 @@
+C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy
+--output-path=obj\Release\netcoreapp2.0\
+--application-name=MyWebAppDeploy
+--content-root=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\Home\About.cshtml
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\Home\Contact.cshtml
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\Home\Index.cshtml
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\Shared\Error.cshtml
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\Shared\_Layout.cshtml
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\Shared\_ValidationScriptsPartial.cshtml
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\_ViewImports.cshtml
+--file=C:\Users\sanch\OneDrive\Workshops\netCore2andVSCodeWkshp\7-DeployAndDocker\Windows\VS 2017 & Azure\Source\Ex4\MyWebAppDeploy\MyWebAppDeploy\Views\_ViewStart.cshtml

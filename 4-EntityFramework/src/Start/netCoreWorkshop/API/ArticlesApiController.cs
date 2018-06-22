@@ -42,7 +42,7 @@ namespace netCoreWorkshop.API
 
             articlesService.AddArticle(article);
 
-            return CreatedAtAction(nameof(Get), new { id = article.Title }, article);
+            return CreatedAtAction(nameof(Create), new { id = article.Title }, article);
         }
 
         

@@ -11,11 +11,11 @@ services:
     ports:
      - "8080:5000"
     depends_on:
-     - "postgres"
+     - "postgresserver"
     networks:
      - aspnetcoreapp-network
 
-  postgres:
+  postgresserver:
     container_name: 'postgres'
     image: postgres
     environment:

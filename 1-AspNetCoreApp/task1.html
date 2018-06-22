@@ -35,8 +35,8 @@
                                 <p>Type <code>code .</code> to open VS Code for directory or open the solution using Visual Studio 2017. Add .NET Core and Kestrel dependencies to the .csproj file (If you are using Visual Studio you can add the references from the NuGet UI):</p>
 
                                 <pre><code>&#60;ItemGroup&#62;
-    &#60;PackageReference Include="Microsoft.AspNetCore" Version="2.0.3" /&#62;
-    &#60;PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.3" /&#62;
+    &#60;PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" /&#62;
+    &#60;PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.1" /&#62;
 &#60;/ItemGroup&#62;
 </code></pre></li>
                             <li>
@@ -46,19 +46,13 @@
 
 public static void Main(string[] args)
 {
-    BuildWebHost(args).Run();
+	CreateWebHostBuilder(args).Build().Run();
 }
 
-public static IWebHost BuildWebHost(string[] args) 
-{
-    var webHost = new WebHostBuilder()
-        .UseKestrel()
-        .UseContentRoot(Directory.GetCurrentDirectory())
-        .Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World!")))
-        .Build();
-                
-    return webHost;			
-}
+public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+	WebHost.CreateDefaultBuilder(args)
+		.UseStartup<Startup>();
+
 </code></pre>
                             </li>
 
@@ -118,15 +112,8 @@ namespace netCoreWorkshop
                                 </ol>
                             </li>
                             <li>
-                                <p>We're going to add a watcher now so when we change our source files, it rebuilds and re-runs our app. Add this to <code>.csproj</code>:</p>
-
-                                <pre><code>&#60;ItemGroup&#62;
-    &#60;DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.2" /&#62;
-&#60;/ItemGroup>
-</code></pre>
-
+                                <p>We're going to use the <code>watcher</code> tool so when we change our source files, it rebuilds and re-runs our app.</p>
                                 <ol>
-                                    <li>We have to run <code>dotnet restore</code> because we changed our project.json and have a new dependency to pull in. </li>
                                     <li>Now when we run <code>dotnet watch run</code>, the watcher will be active. Change the Hello World text, save, and see in the command prompt that it automatically rebuilds and re-runs the app.</li>
                                 </ol>
                             </li>

@@ -110,7 +110,7 @@ public IActionResult Create([FromBody]Article article)
         return BadRequest(ModelState);
     }
 
-    Article.DataSource.Add(new Article { Title = article.Title, Id = Article.DataSource.Count() });
+    Article.DataSource.Add(new Article { Title = article.Title, Id = Article.DataSource.Count() + 1 });
 
     return CreatedAtAction(nameof(Create), new { id = article.Title }, article);
 }
@@ -123,7 +123,7 @@ public IActionResult Create([FromBody]Article article)
                                     <p>Add an item to the article collection. You can either use the following curl command on bash, or your favorite tool like Postman:</p>
 
                                     <p><code>
-curl -H "Content-Type: application/json" -X POST -d '{"title":"I Was Posted"}' http://localhost:5000/api/articles
+curl -H "Content-Type: application/json" -X POST -d "{'title':'I Was Posted'}" http://localhost:5000/api/articles
 </code></p>
                                 </li>
                                 <li>

@@ -51,7 +51,7 @@ public static void Main(string[] args)
 
 public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
 	WebHost.CreateDefaultBuilder(args)
-		.UseStartup<Startup>();
+		.Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")));
 
 </code></pre>
                             </li>

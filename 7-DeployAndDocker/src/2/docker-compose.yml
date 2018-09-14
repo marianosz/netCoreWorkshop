@@ -3,28 +3,30 @@ version: '2'
 services:
 
   web:
-    image: netcore-webapp-postgres
-    container_name: netcore-webapp-postgres
+    image: 'netcore-webapp-postgres'
+    container_name: 'netcore-webapp-postgres'
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/aspnetcoreapp
     ports:
      - "8080:5000"
     depends_on:
-     - "postgresserver"
+     - "postgres"
     networks:
-     - aspnetcoreapp-network
+      - aspnetcoreapp-network
 
-  postgresserver:
+  postgres:
     container_name: 'postgres'
     image: postgres
     environment:
-      - 'POSTGRES_PASSWORD: password'
+      POSTGRES_PASSWORD: password
     networks:
-      - aspnetcoreapp-network
-    ports: 
-     - "8081:5432"
+      - aspnetcoreapp-network    
 
 networks:
   aspnetcoreapp-network:
     driver: bridge
+
+    

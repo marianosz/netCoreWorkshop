@@ -34,7 +34,7 @@
 
                                         <ol>
 											<li>
-											<p>Go to project on the folder HOL\6-DeployAndDocker\src\1
+											<p>Go to project on the folder HOL\7-DeployAndDocker\src\1
 												<p>
 										</li>
                                             <li>
@@ -83,7 +83,7 @@
                                         <h2>
                                             Build the container</h2>
 
-                                        <p>Take a look at the Dockerfile in the HOL\6-DeployAndDocker\src\1 folder. This specifies what the container will have, and in this case, it's based on the latest public .NET Core image. Then it adds some configuration for
+                                        <p>Take a look at the Dockerfile in the HOL\7-DeployAndDocker\src\1 folder. This specifies what the container will have, and in this case, it's based on the latest public .NET Core image. Then it adds some configuration for
                                             ASP.NET. You can build the ASP.NET Core container from the provided Dockerfile, following these steps: </p>
 
                                         <ol>
@@ -114,6 +114,7 @@
 </code></pre></li>
                                         </ol>
 
+										<ol>
                                         <li>
                                             <p>Add an item to the database. You can either use the following curl command, or your favorite tool like Postman:</p>
 
@@ -126,14 +127,35 @@
 
                                         <p>You should see your article displayed. You can add more, and notice that you can stop the app and re-run it, and the data persists in the SQLite database.</p>
 
+										<h2>
+                                            Removing the container</h2>
 
+                                        <ol>
+                                            <li>
+                                                <p>Check the running Containers
+                                                    <pre><code>docker ps
+</code></pre></li>
+
+ <li>
+                                                <p>Stop the running Containers, using the container id
+                                                    <pre><code>docker stop {containerId}
+</code></pre></li>
+
+ <li>
+                                                <p>Delete the containers, using the container id
+                                                    <pre><code>docker rm {containerId}
+</code></pre></li>
+
+                                        </ol>
+										
+										
                                         <h2>Docker Compose
                                         </h2>
 
                                         <p>You can use Docker Compose to spin up multiple containers at once, in order to create a multi-server environmnet. The most common example would be to spin up a container running the application, and a container
                                             running the database. </p>
 
-                                        <p>There is a <code>docker-compose.yml</code> file in the HOL\6-DeployAndDocker\src\1 folder that use Docker Compose to spin up an ASP.NET Core container, and a postgreSQL container. We are going to use that folder to build
+                                        <p>There is a <code>docker-compose.yml</code> file in the HOL\7-DeployAndDocker\src\1 folder that use Docker Compose to spin up an ASP.NET Core container, and a postgreSQL container. We are going to use that folder to build
                                             a image of the application that works with postgreSQL and then deploy all on composed docker containers</p>
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using ConsoleApplication.Data;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace end.Migrations
 {
@@ -14,7 +15,7 @@ namespace end.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

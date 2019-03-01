@@ -7,7 +7,8 @@ using netCoreWorkshop.Business;
 namespace netCoreWorkshop.API
 {
     [Route("/api/articles")]
-    public class ArticlesApiController : Controller
+    [ApiController]
+    public class ArticlesApiController : ControllerBase
     {
         private readonly IArticlesService articlesService;
 

@@ -1,17 +1,15 @@
-using System.Collections.Generic;
-using netCoreWorkshop.Entities;
-using System.Linq;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using netCoreWorkshop.Data;
+using netCoreWorkshop.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace netCoreWorkshop.Business
-{                                                                                 
+{
     public class ArticlesService : IArticlesService
     {
         private readonly ArticlesContext _context;
-        private readonly ILogger<ArticlesService> _logger; 
+        private readonly ILogger<ArticlesService> _logger;
 
         public ArticlesService(ArticlesContext context, ILogger<ArticlesService> logger)
         {
@@ -24,10 +22,10 @@ namespace netCoreWorkshop.Business
         public Article GetOneArticle(int id)
         {
             var article = _context.Articles.SingleOrDefault(m => m.Id == id);
-            
+
             return article;
         }
- 
+
         public Article AddArticle(Article article)
         {
             _logger.LogDebug("Starting save");
@@ -35,13 +33,13 @@ namespace netCoreWorkshop.Business
             var newArticle = new Article { Title = article.Title };
 
             _context.Articles.Add(newArticle);
-            _context.SaveChanges(); 
+            _context.SaveChanges();
 
             _logger.LogDebug("Finished save");
 
             return newArticle;
         }
-		
+
         public Article EditArticle(int id, Article article)
         {
             if (id != article.Id)
@@ -58,7 +56,7 @@ namespace netCoreWorkshop.Business
 
             currentArticle.Title = article.Title;
 
-            _context.SaveChanges(); 
+            _context.SaveChanges();
 
             return currentArticle;
         }
@@ -67,9 +65,9 @@ namespace netCoreWorkshop.Business
         {
             var article = GetOneArticle(id);
 
-			_context.Articles.Remove(article);
-            
-            _context.SaveChanges(); 
-		}
+            _context.Articles.Remove(article);
+
+            _context.SaveChanges();
+        }
     }
 }

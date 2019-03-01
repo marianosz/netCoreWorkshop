@@ -35,11 +35,14 @@
                             <li>
                                 <p>Add these dependencies and tools for Entity Framework and SQLite, as we'll use this lightweight database for our app:</p>
 
-                                <pre><code>&#60;PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" /&#62;
-&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" /&#62;
-&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" /&#62;
-&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" /&#62;
- 
+                                <pre><code>&#60;PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.2" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.2" /&#62;
+&#60;PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.2"&#62;
+    &#60;PrivateAssets&#62;all&#60;/PrivateAssets&#62;
+    &#60;IncludeAssets&#62;runtime; build; native; contentfiles; analyzers&#60;/IncludeAssets&#62;
+&#60;/PackageReference&#62;
+
 </code></pre></li>
                             <li>
                                 <p>Navigate to <code>Startup.cs</code> and add this namespace:</p>

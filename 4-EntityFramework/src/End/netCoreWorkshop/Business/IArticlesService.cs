@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using netCoreWorkshop.Entities;
+using System.Collections.Generic;
 
 namespace netCoreWorkshop.Business
 {
@@ -14,6 +14,5 @@ namespace netCoreWorkshop.Business
         void DeleteArticle(int id);
 
         Article GetOneArticle(int id);
-        
     }
 }

@@ -41,7 +41,8 @@ using System.Linq;
 namespace netCoreWorkshop.API
 {
     [Route("/api/articles")]
-    public class ArticlesApiController : Controller
+    [ApiController]
+    public class ArticlesApiController : ControllerBase
     {
         [HttpGet]
         public string Get() =&gt; "Hello, from the controller!";

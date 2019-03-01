@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using netCoreWorkshop.Entities;
+using System.Linq;
 
 namespace netCoreWorkshop.API
 {
     [Route("/api/articles")]
-    public class ArticlesApiController : Controller
+    [ApiController]
+    public class ArticlesApiController : ControllerBase
     {
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -37,7 +37,6 @@ namespace netCoreWorkshop.API
             return CreatedAtAction(nameof(Create), new { id = article.Title }, article);
         }
 
-        
         [HttpPut("{id}")]
         public IActionResult Edit(int id, [FromBody]Article article)
         {
@@ -59,7 +58,7 @@ namespace netCoreWorkshop.API
             }
 
             currentArticle.Title = article.Title;
-            
+
             return NoContent();
         }
 

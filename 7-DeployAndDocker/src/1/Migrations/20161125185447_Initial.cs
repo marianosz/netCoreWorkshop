@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
-using ConsoleApplication.Data;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace end.Migrations
 {

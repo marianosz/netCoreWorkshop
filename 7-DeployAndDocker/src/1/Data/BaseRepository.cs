@@ -1,3 +1,4 @@
+using ConsoleApplication.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -5,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using ConsoleApplication.Entities;
 
 namespace ConsoleApplication.Data
 {
@@ -18,7 +18,7 @@ namespace ConsoleApplication.Data
         {
             _context = context;
         }
-     
+
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
@@ -54,7 +54,7 @@ namespace ConsoleApplication.Data
         {
             return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
         }
-     
+
         public virtual async Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> predicate)
         {
             return await _context.Set<T>().Where(predicate).ToListAsync();
@@ -71,6 +71,7 @@ namespace ConsoleApplication.Data
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);
             dbEntityEntry.State = EntityState.Modified;
         }
+
         public virtual void Delete(T entity)
         {
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);

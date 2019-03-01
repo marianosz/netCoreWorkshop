@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using ConsoleApplication.Entities;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using ConsoleApplication.Data;
+using ConsoleApplication.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ConsoleApplication.Articles
 {
@@ -11,7 +11,7 @@ namespace ConsoleApplication.Articles
     public class ArticlesController : Controller
     {
         private readonly IArticlesRepository _articlesRepository;
-        private readonly ILogger<ArticlesController> _logger; 
+        private readonly ILogger<ArticlesController> _logger;
 
         public ArticlesController(IArticlesRepository articlesRepository, ILogger<ArticlesController> logger)
         {
@@ -28,7 +28,7 @@ namespace ConsoleApplication.Articles
             var article = await _articlesRepository.GetSingleAsync(id);
             if (article == null)
             {
-                return NotFound(); // This makes it return 404; otherwise it will return a 204 (no content) 
+                return NotFound(); // This makes it return 404; otherwise it will return a 204 (no content)
             }
 
             return new ObjectResult(article);

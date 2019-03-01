@@ -1,10 +1,6 @@
-﻿using System;
+﻿using ConsoleApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using ConsoleApplication.Entities;
-using ConsoleApplication.Data;
 
 namespace end.Migrations
 {

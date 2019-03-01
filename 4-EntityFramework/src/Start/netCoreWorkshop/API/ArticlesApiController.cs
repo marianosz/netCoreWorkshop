@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using netCoreWorkshop.Entities;
 using netCoreWorkshop.Business;
+using netCoreWorkshop.Entities;
 
 namespace netCoreWorkshop.API
 {
     [Route("/api/articles")]
-    public class ArticlesApiController : Controller
+    [ApiController]
+    public class ArticlesApiController : ControllerBase
     {
         private readonly IArticlesService articlesService;
 
@@ -45,7 +44,6 @@ namespace netCoreWorkshop.API
             return CreatedAtAction(nameof(Create), new { id = article.Title }, article);
         }
 
-        
         [HttpPut("{id}")]
         public IActionResult Edit(int id, [FromBody]Article article)
         {
@@ -65,7 +63,7 @@ namespace netCoreWorkshop.API
             {
                 return NotFound();
             }
-            
+
             return NoContent();
         }
 
@@ -73,7 +71,7 @@ namespace netCoreWorkshop.API
         public IActionResult Delete(int id)
         {
             articlesService.DeleteArticle(id);
-            
+
             return NoContent();
         }
     }

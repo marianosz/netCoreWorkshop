@@ -1,10 +1,7 @@
-using System;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using netCoreWorkshop.Business;
 
@@ -33,7 +30,7 @@ namespace netCoreWorkshop
 
             startupLogger.LogTrace("Trace test output!");
             startupLogger.LogDebug("Debug test output!");
-            startupLogger.LogInformation("Info test output!");            
+            startupLogger.LogInformation("Info test output!");
             startupLogger.LogError("Error test output!");
             startupLogger.LogCritical("Trace test output!");
 
@@ -43,7 +40,7 @@ namespace netCoreWorkshop
             }
 
             app.UseStaticFiles();
-            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

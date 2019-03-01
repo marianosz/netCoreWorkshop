@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using netCoreWorkshop.Entities;
 using netCoreWorkshop.Business;
+using netCoreWorkshop.Entities;
 
 namespace netCoreWorkshop.Controllers
 {
@@ -53,7 +51,6 @@ namespace netCoreWorkshop.Controllers
             return View(article);
         }
 
-
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -63,7 +60,7 @@ namespace netCoreWorkshop.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(article);
         }
 
@@ -78,17 +75,16 @@ namespace netCoreWorkshop.Controllers
                 {
                     return NotFound();
                 }
-             
+
                 return RedirectToAction("Index");
             }
 
             return View(article);
         }
 
-
         [HttpGet]
         public IActionResult Delete(int id)
-        {   
+        {
             var article = articlesService.GetOneArticle(id);
 
             if (article == null)
@@ -108,4 +104,3 @@ namespace netCoreWorkshop.Controllers
         }
     }
 }
-

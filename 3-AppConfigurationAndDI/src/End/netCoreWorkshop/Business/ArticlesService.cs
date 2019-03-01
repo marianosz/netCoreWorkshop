@@ -1,15 +1,15 @@
-using System.Collections.Generic;
 using netCoreWorkshop.Entities;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace netCoreWorkshop.Business
-{                                                                                 
+{
     public class ArticlesService : IArticlesService
     {
         public List<Article> GetAllArticles() => Article.DataSource;
-            
+
         public Article GetOneArticle(int id) => Article.DataSource.Where(m => m.Id == id).FirstOrDefault();
-        
+
         public Article AddArticle(Article article)
         {
             article.Id = GetAllArticles().Count() + 1;

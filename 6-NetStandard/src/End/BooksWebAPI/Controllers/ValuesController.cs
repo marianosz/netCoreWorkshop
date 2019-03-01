@@ -1,22 +1,20 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BooksWebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    [ApiController]
+    public class ValuesController : ControllerBase
     {
-		[HttpGet("books")]
-		public IActionResult GetBooks()
-		{
-			return Ok(BooksDemo.BooksData.GetBooksAsList());
-		}
+        [HttpGet("books")]
+        public IActionResult GetBooks()
+        {
+            return Ok(BooksDemo.BooksData.GetBooksAsList());
+        }
 
-		// GET api/values
-		[HttpGet]
+        // GET api/values
+        [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

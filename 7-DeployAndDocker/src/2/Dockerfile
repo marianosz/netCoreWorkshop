@@ -1,5 +1,5 @@
 # Describes how to build a Docker image. Each instruction creates a new layer in the image. 
-FROM microsoft/dotnet:2.1-sdk
+FROM microsoft/dotnet:2.2-sdk
 
 # set up network
 EXPOSE 5000/tcp

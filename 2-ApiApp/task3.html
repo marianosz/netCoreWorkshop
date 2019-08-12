@@ -110,10 +110,12 @@ public IActionResult Create([FromBody]Article article)
     {
         return BadRequest(ModelState);
     }
+    
+	var newArticle = new Article { Title = article.Title, Id = Article.DataSource.Count() };
+	
+    Article.DataSource.Add(newArticle);
 
-    Article.DataSource.Add(new Article { Title = article.Title, Id = Article.DataSource.Count() + 1 });
-
-    return CreatedAtAction(nameof(Create), new { id = article.Title }, article);
+    return CreatedAtAction(nameof(Create), new { id = newArticle.Id }, newArticle);
 }
 </code></pre></li>
 

@@ -28,13 +28,7 @@
                         <h2>Let's get started</h2>
                         <ol>
                             <li>
-                                <p>Start by changing the <code>Project Sdk</code> from <code>Microsoft.NET.Sdk</code> to <code>Microsoft.NET.Sdk.Web</code>on the csproj file</p>
-                            </li>
-                            <li>
                                 <p>Set up MVC! Add this dependency for MVC to the <code>csproj</code> file. You will have to use your IDE to add using statements in the files referenced</p>
-
-                                <pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0"/&#62;
-</code></pre>
                             </li>
                             <li>
                                 <p>Add this namespaces to the <code>Startup</code> class:</p>
@@ -46,18 +40,20 @@
                                     <pre><code>// This method gets called by the runtime. Use this method to add services to the container.
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+    services.AddControllersWithViews();
 }
 </code></pre>
                                 </li>
                                 <li>
                                     <p>Replace the content of the <code>Configure</code> method on <code>Startup</code> class with the following line to add the MVC middleware:</p>
 
-                                    <pre><code>app.UseMvc(routes =>
+                                    <pre><code>app.UseRouting();
+									
+app.UseEndpoints(endpoints =>
 {
-    routes.MapRoute(
-        name: "default",
-        template: "{controller}/{action=Index}/{id?}");
+	endpoints.MapControllerRoute(
+		name: "default",
+		pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 </code></pre>
                                 </li>
@@ -283,7 +279,7 @@ namespace netCoreWorkshop.Entities
         @RenderBody()
         &lt;hr /&gt;
         &lt;footer&gt;
-            &lt;p&gt;&copy; 2016 - MVC&lt;/p&gt;
+            &lt;p&gt;&copy; 2020 - NET CORE&lt;/p&gt;
         &lt;/footer&gt;
     &lt;/div&gt;
     @RenderSection("scripts", required: false)
@@ -305,13 +301,7 @@ namespace netCoreWorkshop.Entities
                                         <p>This last file will setup <code>_Layout.cshtml</code> as the default layout for all the Views on the app.
                                     </li>
                                     <li>
-                                        <p>Now we need a last step. In order for the web server, to serve the css file, we need to add some code to enable that feature. This is implemented on the <code>Statics Files middleware</code>, so we need to configure
-                                            it. Add the following reference on the csproj file:</p>
-                                        <pre><code>&lt;PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" /&gt;</code>
-</pre>
-                                    </li>
-                                    <li>
-                                        <p>Configure the <code>Statics Files middleware</code> on the <code>Startup.cs</code> class, inside the <code>Confure</code> method, adding the following line:</p>
+                                        <p>Now we need a last step. In order for the web server, to serve the css file, we need to add some code to enable that feature. This is implemented on the <code>Statics Files middleware</code>. Configure the <code>Statics Files middleware</code> on the <code>Startup.cs</code> class, inside the <code>Confure</code> method, adding the following line:</p>
                                         <pre><code> app.UseStaticFiles();</code>
 </pre>
                                         <p>This middleware will enable the feature to serve statics files like css, images, etc.</p>

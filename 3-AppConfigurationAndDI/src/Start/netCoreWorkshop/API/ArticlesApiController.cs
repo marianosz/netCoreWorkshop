@@ -32,9 +32,11 @@ namespace netCoreWorkshop.API
                 return BadRequest(ModelState);
             }
 
-            Article.DataSource.Add(new Article { Title = article.Title, Id = Article.DataSource.Count() });
+            var newArticle = new Article { Title = article.Title, Id = Article.DataSource.Count() };
 
-            return CreatedAtAction(nameof(Create), new { id = article.Title }, article);
+            Article.DataSource.Add(newArticle);
+
+            return CreatedAtAction(nameof(Create), new { id = newArticle.Id }, newArticle);
         }
 
         [HttpPut("{id}")]

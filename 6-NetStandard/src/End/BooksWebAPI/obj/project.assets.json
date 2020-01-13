@@ -1,0 +1,95 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "BooksDataSource/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/BooksDataSource.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BooksDataSource.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BooksDataSource/1.0.0": {
+      "type": "project",
+      "path": "../BooksDataSource/BooksDataSource.csproj",
+      "msbuildProject": "../BooksDataSource/BooksDataSource.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "BooksDataSource >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\sanch\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\src\\netCoreWorkshop\\6-NetStandard\\src\\End\\BooksWebAPI\\BooksWebAPI.csproj",
+      "projectName": "BooksWebAPI",
+      "projectPath": "C:\\src\\netCoreWorkshop\\6-NetStandard\\src\\End\\BooksWebAPI\\BooksWebAPI.csproj",
+      "packagesPath": "C:\\Users\\sanch\\.nuget\\packages\\",
+      "outputPath": "C:\\src\\netCoreWorkshop\\6-NetStandard\\src\\End\\BooksWebAPI\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\sanch\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {
+            "C:\\src\\netCoreWorkshop\\6-NetStandard\\src\\End\\BooksDataSource\\BooksDataSource.csproj": {
+              "projectPath": "C:\\src\\netCoreWorkshop\\6-NetStandard\\src\\End\\BooksDataSource\\BooksDataSource.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

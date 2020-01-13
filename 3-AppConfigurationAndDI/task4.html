@@ -53,23 +53,18 @@
                                 <p>Now we want to set it up so when the hosting environment is development, it will display a detailed exception page in the browser, including header information. </p>
 
                                 <ol>
-                                    <li>
-                                        <p>To do that, first add this dependency: </p>
-
-                                        <pre><code>&#60;PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" /&#62;
-</code></pre></li>
-                                    <li>
                                         <p>Then add these namespaces to Startup.cs:</p>
                                         <pre><code>using System;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 </code></pre></li>
                                     <li>
 
-                                        <p>Then add <code>IHostingEnvironment</code> to the Startup.cs <code>Configure</code> method, and use that object to get the environment. Then add the code to check the environment and add the developer exception page
+                                        <p>Then add <code>IWebHostEnvironment</code> to the Startup.cs <code>Configure</code> method, and use that object to get the environment. Then add the code to check the environment and add the developer exception page
                                             middleware:
                                         </p>
 
-                                        <pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+                                        <pre><code>public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
     ...
     if (env.IsDevelopment())
@@ -101,7 +96,7 @@ using Microsoft.AspNetCore.Hosting;
                         <ol>
                             <li>
                                 <p>Add this dependency:</p>
-                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" /&#62;
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.1.0" /&#62;
 </code></pre></li>
                             <li>
                                 <p>Add this namespace to <code>Program.cs</code>:</p>
@@ -138,7 +133,7 @@ using Microsoft.AspNetCore.Hosting;
                             <li>
                                 <p>Add these dependencies:</p>
 
-                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" /&#62;
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" /&#62;
 </code></pre></li>
                             <li>
                                 <p>Navigate to <code>Program.cs</code> and add this namespace:</p>
@@ -149,7 +144,7 @@ using Microsoft.AspNetCore.Hosting;
 
                                 <pre><code>.ConfigureAppConfiguration((builderContext, config) =>
 {
-    IHostingEnvironment env = builderContext.HostingEnvironment;
+    var env = builderContext.HostingEnvironment;
 
     config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
@@ -194,17 +189,12 @@ public IConfiguration Configuration { get; }
                             <li>
                                 <p>Add the <code>Microsoft.Extensions.Logging.Console</code> package to the <code>csproj</code> file:</p>
 
-                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" /&#62;
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.0" /&#62;
 </code></pre></li>
                             <li>
                                 <p>Navigate to <code>Program.cs</code> and Add this namespace</p>
                                 <pre><code>using Microsoft.Extensions.Logging;
 </code></pre></li>
-
-                            <p>Navigate to <code>Program.cs</code> and Add this namespace</p>
-                            <pre><code>using Microsoft.Extensions.Logging;
-</code></pre></li>
-
                             <li>
                                 <p>Then add this right before <code>UseStartup&lt;Startup&gt;()</code> in the <code>CreateDefaultBuilder</code> initialization, so we can set up the log infraestructure: </p>
 

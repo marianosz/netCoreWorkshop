@@ -1,0 +1,8 @@
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\bin\Debug\netstandard2.0\BooksDataSource.deps.json
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\bin\Debug\netstandard2.0\BooksDataSource.dll
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\bin\Debug\netstandard2.0\BooksDataSource.pdb
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\obj\Debug\netstandard2.0\BooksDataSource.csprojAssemblyReference.cache
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\obj\Debug\netstandard2.0\BooksDataSource.AssemblyInfoInputs.cache
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\obj\Debug\netstandard2.0\BooksDataSource.AssemblyInfo.cs
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\obj\Debug\netstandard2.0\BooksDataSource.dll
+C:\src\netCoreWorkshop\6-NetStandard\src\End\BooksDataSource\obj\Debug\netstandard2.0\BooksDataSource.pdb

@@ -25,7 +25,7 @@ namespace ConsoleApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore().AddJsonFormatters().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddControllersWithViews();
 
             services.AddDbContext<Data.ArticlesContext>(options =>
             {
@@ -37,7 +37,14 @@ namespace ConsoleApplication
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             if (env.IsDevelopment())
             {

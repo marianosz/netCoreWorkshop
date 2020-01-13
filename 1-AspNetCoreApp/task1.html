@@ -32,13 +32,12 @@
                             <li>Open a command line, create and go into a new directory, and run <code>dotnet new console -n netCoreWorkshop</code>, then on the <code>netCoreWorkshop</code> folder, run <code>dotnet restore</code>, then <code>dotnet run</code>                                to create &amp; run a .NET Core 'Hello World!' app.
                             </li>
                             <li>
-                                <p>Type <code>code .</code> to open VS Code for directory or open the solution using Visual Studio 2017. Add .NET Core and Kestrel dependencies to the .csproj file (If you are using Visual Studio you can add the references from the NuGet UI):</p>
-
-                                <pre><code>&#60;ItemGroup&#62;
-    &#60;PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" /&#62;
-    &#60;PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" /&#62;
-&#60;/ItemGroup&#62;
+                                <p>Type <code>code .</code> to open VS Code for directory or open the solution using Visual Studio 2019. 
+								
 </code></pre></li>
+                            <li>
+                                <p>Start by changing the <code>Project Sdk</code> from <code>Microsoft.NET.Sdk</code> to <code>Microsoft.NET.Sdk.Web</code>on the csproj file, this change will allow the project to access all the ASP.NET Core base libraries without the need to add the references</p>
+                            </li>
                             <li>
                                 <p>Add ASP.NET Core setup code to the <code>Main</code> method (entry point of all .NET Core applications, including ASP.NET Core) in <code>Program.cs</code>, replacing the content of the class:</p>
 
@@ -46,13 +45,13 @@
 
 public static void Main(string[] args)
 {
-	CreateWebHostBuilder(args).Build().Run();
+	CreateHostBuilder(args).Build().Run();
 }
 
-public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+public static IWebHostBuilder CreateHostBuilder(string[] args) =>
 	WebHost.CreateDefaultBuilder(args)
-		.Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")));
-
+	.Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")));  
+	
 </code></pre>
                             </li>
 
@@ -62,6 +61,7 @@ public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using System.IO;
 </code></pre>
 
@@ -73,7 +73,7 @@ using System.IO;
                                 <ol>
                                     <li>
                                         <p>Remove the host configuration:</p>
-                                        <pre><code>.Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")))  
+                                        <pre><code>.Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")));  
 </code></pre></li>
 
                                     <li>

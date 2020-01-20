@@ -103,7 +103,7 @@ using Microsoft.Extensions.Hosting;
                                 <pre><code>using Microsoft.Extensions.Configuration;
 </code></pre></li>
                             <li>
-                                <p>Add this configuration on the <code>Program.cs</code> <code>BuildWebHost</code> method:</p>
+                                <p>Add this configuration on the <code>Program.cs</code> <code>CreateHostBuilder</code> method:</p>
 
                                 <pre><code>var commandLineConfig = new ConfigurationBuilder()  
     .AddCommandLine(args)
@@ -136,10 +136,6 @@ using Microsoft.Extensions.Hosting;
                                 <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" /&#62;
 </code></pre></li>
                             <li>
-                                <p>Navigate to <code>Program.cs</code> and add this namespace:</p>
-                                <pre><code>using Microsoft.Extensions.Configuration;
-</code></pre></li>
-                            <li>
                                 <p>Then add this right before <code>UseStartup&lt;Startup&gt;()</code> in the <code>CreateDefaultBuilder</code> initialization, so we can init the configuration builder: </p>
 
                                 <pre><code>.ConfigureAppConfiguration((builderContext, config) =>
@@ -151,6 +147,10 @@ using Microsoft.Extensions.Hosting;
 
     config.AddEnvironmentVariables();
 })
+</code></pre></li>
+                            <li>
+                                <p>Navigate to <code>Startup.cs</code> and add this namespace:</p>
+                                <pre><code>using Microsoft.Extensions.Configuration;
 </code></pre></li>
                             <li>
                                 <p>Navigate to <code>Startup.cs</code> and add this constructor code that will inject the Configuration object:</p>
@@ -205,14 +205,18 @@ public IConfiguration Configuration { get; }
 })</code></pre>
 
                             </li>
+<li>
+                                <p>Navigate to <code>Startup.cs</code> and Add this namespace</p>
+                                <pre><code>using Microsoft.Extensions.Logging;
+</code></pre></li>
                             <li>
-                                <p>Navigate to <code>Startup.cs</code> and change the <code>Configure</code> method to:</p><pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) 
+                                <p>Navigate to <code>Startup.cs</code> and change the <code>Configure</code> method to:</p><pre><code>public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) 
 {
     var startupLogger = loggerFactory.CreateLogger&lt;Startup&gt;(); 
     ...
                             </code></pre></li>
                             <li>
-                                <p>Add some log statements to the end of the <code>Configure</code> method to test the settings:</p><pre><code>public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+                                <p>Add some log statements to the end of the <code>Configure</code> method to test the settings:</p><pre><code>public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
 {
   ...
     startupLogger.LogTrace("Trace test output!");

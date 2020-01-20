@@ -248,7 +248,7 @@ public static IApplicationBuilder UseAPIKey(this IApplicationBuilder builder, AP
                             <li>
                                 <p>Add this dependency to add the <code>Options</code> feature from the dependency injection system.</p>
 
-                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" /&#62;</code></pre></li>
+                                <pre><code>&#60;PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.0" /&#62;</code></pre></li>
                             <li>
                                 <p>Add the following section with the APIKey configuration to the <code>appSettings.json</code>
                                 </p>
@@ -259,7 +259,7 @@ public static IApplicationBuilder UseAPIKey(this IApplicationBuilder builder, AP
 </code></pre>
                             </li>
                             <li>
-                                <p>Change the <code>APIKeyMiddleware</code> constructor to take <code>IOptions&#60;APIKeyOptions&#62;</code> instead of <code>APIKeyOptions</code> and obtain the value of the options parameter. Resolve the missing dependencies.
+                                <p>Change the <code>APIKeyMiddleware</code> constructor to take <code>IOptions&#60;APIKeyOptions&#62;</code> instead of <code>APIKeyOptions</code> and obtain the value of the options parameter. Resolve the missing dependencies with <code>using Microsoft.Extensions.Options;</code>.
                                 </p>
 
                                 <pre><code>public APIKeyMiddleware(RequestDelegate next, IOptions&#60;APIKeyOptions&#62; options)

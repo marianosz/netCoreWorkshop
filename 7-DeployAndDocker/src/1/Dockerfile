@@ -1,5 +1,5 @@
 # Describes how to build a Docker image. Each instruction creates a new layer in the image. 
-FROM microsoft/dotnet:2.2-sdk
+FROM microsoft/dotnet:3.1-sdk
 
 # set up network
 EXPOSE 5000/tcp
@@ -14,6 +14,6 @@ RUN ["dotnet", "restore"]
 #Build the Application
 RUN ["dotnet", "build"]
 #Run the EF Migrations
-RUN ["dotnet", "ef", "database", "update"]
+RUN ["dotnet", "ef", "database", "update"]S
 
 ENTRYPOINT ["dotnet", "run"]

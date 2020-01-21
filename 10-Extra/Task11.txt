@@ -1,0 +1,3 @@
+Full ASP.NET Core 3 workshop
+
+Reffer to https://github.com/miroslavpopovic/aspnetcore-workshop

@@ -77,7 +77,7 @@ using System.IO;
 </code></pre></li>
 
                                     <li>
-                                        <p>Tweak your Program.cs to use a Startup class for ASP.NET Core host configuration. For this add the following code before the call to <code>.Build()</code>:</p>
+                                        <p>Tweak your Program.cs to use a Startup class for ASP.NET Core host configuration. For this add the following code after the call to <code>.CreateDefaultBuilder(args)</code>:</p>
 
                                         <pre><code>.UseStartup&lt;Startup&gt;()
 </code></pre></li>

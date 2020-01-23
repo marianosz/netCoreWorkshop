@@ -1,5 +1,5 @@
 # Describes how to build a Docker image. Each instruction creates a new layer in the image. 
-FROM microsoft/dotnet:3.1-sdk
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 
 # set up network
 EXPOSE 5000/tcp

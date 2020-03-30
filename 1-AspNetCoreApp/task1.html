@@ -39,6 +39,19 @@
                                 <p>Start by changing the <code>Project Sdk</code> from <code>Microsoft.NET.Sdk</code> to <code>Microsoft.NET.Sdk.Web</code>on the csproj file, this change will allow the project to access all the ASP.NET Core base libraries without the need to add the references</p>
                             </li>
                             <li>
+							                                <p>Add these namespaces. These are needed and can be added manually, though you can use the IDE (if VS Code + C# extension, or VS)</p>
+                                <pre><code>using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using System.IO;
+</code></pre>
+
+                            </li>
+
+                            <li>
+
                                 <p>Add ASP.NET Core setup code to the <code>Main</code> method (entry point of all .NET Core applications, including ASP.NET Core) in <code>Program.cs</code>, replacing the content of the class:</p>
 
                                 <pre><code>// Minimal ASP.NET setup in Main method
@@ -52,17 +65,6 @@ public static IWebHostBuilder CreateHostBuilder(string[] args) =>
 	WebHost.CreateDefaultBuilder(args)
 	.Configure(app =&gt; app.Run(context =&gt; context.Response.WriteAsync("Hello World, from ASP.NET!")));  
 	
-</code></pre>
-                            </li>
-
-                            <li>
-                                <p>Add these namespaces. These are needed and can be added manually, though you can use the IDE (if VS Code + C# extension, or VS)</p>
-                                <pre><code>using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using System.IO;
 </code></pre>
 
                                 <p>At this point, you have a minimal ASP.NET Core app set up. Run <code>dotnet restore</code>, then <code>dotnet run</code>. You can navigate to <code>http://localhost:5000</code> to get a hello world response.</p>
